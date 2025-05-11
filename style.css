@@ -1,70 +1,56 @@
-<script>
-    const loginPage = document.getElementById('login-page');
-    const profilePage = document.getElementById('profile-page');
-    const calendarPage = document.getElementById('calendar-page');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const loginButton = document.getElementById('login-button');
-    const managePermissionsButton = document.getElementById('manage-permissions-button');
-    const backToProfileButton = document.getElementById('back-to-profile-button');
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    // Variables para el movimiento del contenedor
-    const containerRef = loginPage; // Se puede cambiar dinámicamente si es necesario
-    let mouseX = 0, mouseY = 0;
-    let targetX = 0, targetY = 0;
+.cloud-background {
+  background: linear-gradient(to top, #74ebd5 0%, #ACB6E5 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
 
-    // Inicializar movimiento paralaje
-    function initParallax(container) {
-        if (!container) return;
+.cloud {
+  position: absolute;
+  width: 200px;
+  height: 80px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: moveClouds linear infinite;
+}
 
-        container.style.transform = 'translate(0px, 0px)';
-        container.style.transition = 'none'; // Desactiva transición inicial
+.cloud:before,
+.cloud:after {
+  content: '';
+  position: absolute;
+  background: #fff;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  top: -40px;
+  left: 50px;
+}
 
-        function animate() {
-            targetX += (mouseX - targetX) * 0.05;
-            targetY += (mouseY - targetY) * 0.05;
-            container.style.transform = `translate(${targetX}px, ${targetY}px)`;
-            requestAnimationFrame(animate);
-        }
+.cloud:after {
+  width: 80px;
+  height: 80px;
+  top: -20px;
+  left: 100px;
+}
 
-        window.addEventListener("mousemove", (e) => {
-            const rect = container.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            mouseX = (e.clientX - centerX) * 0.05;
-            mouseY = (e.clientY - centerY) * 0.05;
-        });
+@keyframes moveClouds {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
 
-        animate();
-    }
-
-    // Mostrar página con efecto paralaje
-    function showPage(pageElement) {
-        loginPage.style.display = 'none';
-        profilePage.style.display = 'none';
-        calendarPage.style.display = 'none';
-        pageElement.style.display = 'block';
-
-        // Reiniciar posición del contenedor
-        if (pageElement === loginPage) initParallax(loginPage);
-        else if (pageElement === profilePage) initParallax(profilePage);
-        else if (pageElement === calendarPage) initParallax(calendarPage);
-
-        // Si mostramos el calendario, renderizarlo
-        if (pageElement === calendarPage) {
-            renderCalendar(currentDate);
-        }
-    }
-
-    // Datos del calendario
-    const currentDate = new Date();
-    const chileanHolidays = [
-        { month: 0, day: 1, name: "Año Nuevo" },
-        { month: 3, day: 18, name: "Viernes Santo" },
-        { month: 3, day: 19, name: "Sábado Santo" },
-        { month: 4, day: 1, name: "Día del Trabajador" },
-        { month: 4, day: 21, name: "Día de las Glorias Navales" },
-        { month: 5,
+.glass-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
 /* Efecto de paralaje: movimiento suave del contenedor */
 .page-container {
     transition: transform 0.1s ease;
