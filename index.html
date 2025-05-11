@@ -6,8 +6,6 @@
   <title>Portal de Usuario</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins :wght@400;600&display=swap" />
   <style>
-    /* ... Tus estilos actuales aquí ... */
-
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
@@ -37,6 +35,29 @@
       100% { transform: translateX(-50%); }
     }
 
+    .cloud-background::before,
+    .cloud-background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://placehold.co/1200x800/c0d0e0/c0d0e0?text= ');
+      background-size: cover;
+      opacity: 0.6;
+    }
+
+    .cloud-background::after {
+      left: 100%;
+      animation: moveCloudsLayer2 60s linear infinite;
+    }
+
+    @keyframes moveCloudsLayer2 {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
     .page-container {
       max-width: 600px;
       width: 90%;
@@ -57,6 +78,33 @@
 
     .page-container:hover {
       transform: translateY(-5px);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.4);
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(51, 51, 51, 0.7);
     }
 
     button {
@@ -82,6 +130,12 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
+    #profile-page h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
     .profile-info p {
       margin-bottom: 10px;
       color: #555;
@@ -90,10 +144,153 @@
       border-radius: 5px;
     }
 
+    .profile-info strong {
+      color: #333;
+    }
+
+    #calendar-page .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 0 10px;
+    }
+
+    #calendar-page .calendar-header h2 {
+      margin: 0;
+      font-size: 1.5em;
+      color: #333;
+    }
+
+    #calendar-page .calendar-header .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    #calendar-page .back-button {
+      background-color: rgba(150, 150, 150, 0.7);
+      margin-top: 20px;
+      width: auto;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #calendar-page .back-button:hover {
+      background-color: rgba(120, 120, 120, 0.8);
+    }
+
+    #calendar-page .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      text-align: center;
+    }
+
+    #calendar-page .day-name {
+      font-weight: bold;
+      color: #555;
+      padding: 10px 0;
+    }
+
+    #calendar-page .day {
+      padding: 10px 5px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      color: #333;
+    }
+
+    #calendar-page .day:hover {
+      background-color: rgba(255, 255, 255, 0.6);
+      transform: scale(1.05);
+    }
+
+    #calendar-page .day.other-month {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    #calendar-page .day.today {
+      font-weight: bold;
+      border: 2px solid rgba(255, 99, 71, 0.7);
+    }
+
+    #calendar-page .day.selected {
+      background-color: rgba(255, 165, 0, 0.7);
+      color: white;
+      font-weight: bold;
+    }
+
+    #calendar-page .day.holiday {
+      background-color: rgba(255, 69, 0, 0.6);
+      color: white;
+      font-weight: bold;
+    }
+
+    #calendar-page .day.leave {
+      background-color: rgba(0, 128, 0, 0.6);
+      color: white;
+      font-weight: bold;
+    }
+
+    #calendar-page .day .event-indicator {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6em;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    #calendar-page .day.holiday .event-indicator {
+      content: 'Feriado';
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    #calendar-page .day.leave.admin .event-indicator {
+      content: 'Adm.';
+    }
+
+    #calendar-page .day.leave.sick .event-indicator {
+      content: 'Enf.';
+    }
+
+    #calendar-page .day.leave.marriage .event-indicator {
+      content: 'Mat.';
+    }
+
+    @media (max-width: 768px) {
+      .page-container {
+        padding: 20px;
+      }
+
+      #calendar-page .calendar-header h2 {
+        font-size: 1.2em;
+      }
+
+      #calendar-page .calendar-header button {
+        padding: 6px 10px;
+        font-size: 0.9em;
+      }
+
+      #calendar-page .day {
+        padding: 8px 3px;
+        font-size: 0.9em;
+      }
+    }
+
+    /* Estilo para el modal */
     .modal {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background-color: rgba(0,0,0,0.6);
       justify-content: center;
       align-items: center;
@@ -114,191 +311,243 @@
       margin-bottom: 10px;
     }
 
-    .modal-content input,
     .modal-content select,
-    .modal-content textarea,
     .modal-content button {
       margin-top: 10px;
       padding: 10px;
       width: 100%;
       font-size: 1em;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .modal-content button {
-      margin-top: 20px;
-      background-color: #4682b4;
-      color: white;
-      border: none;
-    }
-
-    .modal-content button:hover {
-      background-color: #36648B;
     }
   </style>
 </head>
 <body>
 
-<!-- Fondo animado -->
-<div class="cloud-background"></div>
+  <!-- Fondo animado -->
+  <div class="cloud-background"></div>
 
-<!-- Contenedores -->
-<div id="login-page" class="page-container">
-  <h2>Iniciar Sesión</h2>
-  <div class="form-group">
-    <label for="email">Correo Electrónico:</label>
-    <input type="email" id="email" placeholder="Ingresa tu correo" />
-  </div>
-  <div class="form-group">
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password" placeholder="Ingresa tu contraseña" />
-  </div>
-  <button id="login-button">Entrar</button>
-</div>
-
-<div id="profile-page" class="page-container">
-  <h2>Mi Perfil</h2>
-  <div class="profile-info">
-    <p><strong>Nombre Completo:</strong> Ruth Pérez</p>
-    <p><strong>RUT:</strong> 12.345.678-9</p>
-    <p><strong>Dirección:</strong> Calle Falsa 123, Santiago</p>
-    <p><strong>Teléfono:</strong> +56 9 1234 5678</p>
-    <p><strong>Correo:</strong> ruth.perez@example.com</p>
-  </div>
-  <button id="request-permission-button">Pedir Permiso</button>
-  <button id="manage-permissions-button">Gestionar Permisos y Feriados</button>
-  <button onclick="showPage(loginPage)" style="margin-top: 10px;">⬅️ Atrás</button>
-</div>
-
-<div id="calendar-page" class="page-container">
-  <div class="calendar-header">
-    <div class="nav-buttons">
-      <button id="prevMonth">Anterior</button>
-      <button id="nextMonth">Siguiente</button>
+  <!-- Contenedores -->
+  <div id="login-page" class="page-container">
+    <h2>Iniciar Sesión</h2>
+    <div class="form-group">
+      <label for="email">Correo Electrónico:</label>
+      <input type="email" id="email" placeholder="Ingresa tu correo" />
     </div>
-    <h2 id="currentMonthYear"></h2>
+    <div class="form-group">
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" placeholder="Ingresa tu contraseña" />
+    </div>
+    <button id="login-button">Entrar</button>
   </div>
-  <div class="calendar-grid"></div>
-  <button id="back-to-profile-button" class="back-button">Volver al Perfil</button>
-</div>
 
-<!-- Modal para pedir permiso -->
-<div class="modal" id="permission-modal">
-  <div class="modal-content">
-    <h3>Solicitar Permiso</h3>
-    <select id="type-select">
-      <option value="Administrativo">Permiso Administrativo</option>
-      <option value="Enfermedad">Licencia Médica</option>
-      <option value="Matrimonio">Permiso por Matrimonio</option>
-      <option value="Feriado">Feriado</option>
-    </select>
-    <input type="date" id="start-date" placeholder="Fecha de inicio" />
-    <input type="date" id="end-date" placeholder="Fecha de término" />
-    <textarea id="reason" rows="3" placeholder="Motivo del permiso..."></textarea>
-    <button onclick="generatePDF()">Descargar PDF</button>
-    <button onclick="closeModal()">Cerrar</button>
+  <div id="profile-page" class="page-container">
+    <h2>Mi Perfil</h2>
+    <div class="profile-info">
+      <p><strong>Nombre Completo:</strong> Ruth Pérez</p>
+      <p><strong>RUT:</strong> 12.345.678-9</p>
+      <p><strong>Dirección:</strong> Calle Falsa 123, Santiago</p>
+      <p><strong>Teléfono:</strong> +56 9 1234 5678</p>
+      <p><strong>Correo:</strong> ruth.perez@example.com</p>
+    </div>
+    <button id="manage-permissions-button">Gestionar Permisos y Feriados</button>
+    <button onclick="showPage(loginPage)" style="margin-top: 10px;">⬅️ Atrás</button>
   </div>
-</div>
 
-<!-- jsPDF CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
+  <div id="calendar-page" class="page-container">
+    <div class="calendar-header">
+      <div class="nav-buttons">
+        <button id="prevMonth">Anterior</button>
+        <button id="nextMonth">Siguiente</button>
+      </div>
+      <h2 id="currentMonthYear"></h2>
+    </div>
+    <div class="calendar-grid"></div>
+    <button id="back-to-profile-button" class="back-button">Volver al Perfil</button>
+  </div>
 
-<script>
-  const loginPage = document.getElementById('login-page');
-  const profilePage = document.getElementById('profile-page');
-  const calendarPage = document.getElementById('calendar-page');
+  <!-- Modal para solicitar permiso -->
+  <div class="modal" id="request-modal">
+    <div class="modal-content">
+      <h3>Seleccionaste <span id="selected-days-count">0</span> día(s)</h3>
+      <select id="leave-type">
+        <option value="admin">Permiso Administrativo</option>
+        <option value="sick">Licencia Médica</option>
+        <option value="marriage">Permiso por Matrimonio</option>
+        <option value="holiday">Feriado</option>
+      </select>
+      <button onclick="generatePDF()">Descargar PDF</button>
+      <button onclick="closeModal()">Cerrar</button>
+    </div>
+  </div>
 
-  const requestPermissionButton = document.getElementById('request-permission-button');
-  const permissionModal = document.getElementById('permission-modal');
+  <!-- jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
 
-  const loginButton = document.getElementById('login-button');
+  <!-- Script principal -->
+  <script>
+    const loginPage = document.getElementById('login-page');
+    const profilePage = document.getElementById('profile-page');
+    const calendarPage = document.getElementById('calendar-page');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginButton = document.getElementById('login-button');
+    const managePermissionsButton = document.getElementById('manage-permissions-button');
+    const backToProfileButton = document.getElementById('back-to-profile-button');
 
-  function showPage(pageElement) {
-    [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
-    pageElement.style.display = 'block';
-    if (pageElement === calendarPage) renderCalendar(new Date());
-  }
+    const calendarGrid = document.querySelector('#calendar-page .calendar-grid');
+    const currentMonthYear = document.getElementById('currentMonthYear');
+    const prevMonthButton = document.getElementById('prevMonth');
+    const nextMonthButton = document.getElementById('nextMonth');
 
-  loginButton.addEventListener('click', () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    if (email && password) showPage(profilePage);
-    else alert('Por favor, ingresa tu correo y contraseña.');
-  });
+    const modal = document.getElementById('request-modal');
+    const selectedDaysCount = document.getElementById('selected-days-count');
+    const leaveTypeSelect = document.getElementById('leave-type');
 
-  requestPermissionButton.addEventListener('click', () => {
-    permissionModal.style.display = 'flex';
-  });
+    let currentDate = new Date();
+    let selectedDays = [];
 
-  function closeModal() {
-    permissionModal.style.display = 'none';
-  }
+    const chileanHolidays = [
+      { month: 0, day: 1, name: "Año Nuevo" },
+      { month: 3, day: 18, name: "Viernes Santo" },
+      { month: 3, day: 19, name: "Sábado Santo" },
+      { month: 4, day: 1, name: "Día del Trabajador" },
+      { month: 4, day: 21, name: "Día de las Glorias Navales" },
+      { month: 5, day: 26, name: "San Pedro y San Pablo" },
+      { month: 6, day: 16, name: "Virgen del Carmen" },
+      { month: 7, day: 15, name: "Asunción de la Virgen" },
+      { month: 8, day: 18, name: "Independencia Nacional" },
+      { month: 8, day: 19, name: "Día de las Glorias del Ejército" },
+      { month: 9, day: 31, name: "Día Nacional de las Iglesias Evangélicas y Protestantes" },
+      { month: 10, day: 1, name: "Día de Todos los Santos" },
+      { month: 11, day: 8, name: "Inmaculada Concepción" },
+      { month: 11, day: 25, name: "Navidad" }
+    ];
 
-  async function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    function showPage(pageElement) {
+      [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
+      pageElement.style.display = 'block';
+      if (pageElement === calendarPage) renderCalendar(currentDate);
+    }
 
-    const type = document.getElementById('type-select').value;
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
-    const reason = document.getElementById('reason').value;
+    loginButton.addEventListener('click', () => {
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      if (email && password) showPage(profilePage);
+      else alert('Por favor, ingresa tu correo y contraseña.');
+    });
 
-    // Datos del usuario
-    const nombre = "Ruth Pérez";
-    const rut = "12.345.678-9";
+    managePermissionsButton.addEventListener('click', () => showPage(calendarPage));
+    backToProfileButton.addEventListener('click', () => showPage(profilePage));
 
-    // Formato de fechas
-    const formatDate = (dateStr) => {
-      const [y, m, d] = dateStr.split('-');
-      return `${d}/${m}/${y}`;
-    };
+    prevMonthButton.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar(currentDate);
+    });
 
-    // Fecha actual
-    const today = new Date();
-    const formattedToday = today.toLocaleDateString("es-CL");
+    nextMonthButton.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar(currentDate);
+    });
 
-    // Configurar el documento PDF
-    doc.setFontSize(12);
+    function renderCalendar(date) {
+      calendarGrid.innerHTML = '';
+      const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+      dayNames.forEach(name => {
+        const div = document.createElement('div');
+        div.classList.add('day-name');
+        div.textContent = name;
+        calendarGrid.appendChild(div);
+      });
 
-    // Encabezado
-    doc.text(`Santiago, ${formattedToday}`, 20, 30);
-    doc.setFontSize(14);
-    doc.text(`Solicitud de ${type}`, 20, 50);
-    doc.setFontSize(12);
-    doc.text(`De: ${nombre} | RUT: ${rut}`, 20, 70);
-    doc.text(`Asunto: Solicitud de Permiso`, 20, 80);
-    doc.text(`Fecha: ${formattedToday}`, 20, 90);
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      currentMonthYear.textContent = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(date);
 
-    // Cuerpo
-    doc.setFontSize(12);
-    doc.text("Estimados/as:", 20, 110);
-    doc.text("Me dirijo a usted con la finalidad de solicitar un permiso de:", 20, 120);
-    doc.text(`Tipo: ${type}`, 20, 130);
-    doc.text(`Desde: ${startDate ? formatDate(startDate) : '-'}`, 20, 140);
-    doc.text(`Hasta: ${endDate ? formatDate(endDate) : '-'}`, 20, 150);
-    doc.text("Con el siguiente motivo:", 20, 160);
-    const splitReason = doc.splitTextToSize(reason, 170);
-    doc.text(splitReason, 20, 170);
+      const firstDayOfMonth = new Date(year, month, 1);
+      const lastDayOfMonth = new Date(year, month + 1, 0);
+      const numDaysInMonth = lastDayOfMonth.getDate();
 
-    // Pie de firma
-    const startY = Math.max(180 + splitReason.length * 5, 200);
-    doc.text("Atentamente,", 20, startY);
-    doc.text("_________________", 20, startY + 10);
-    doc.text(nombre, 20, startY + 15);
-    doc.text(rut, 20, startY + 25);
+      let firstDayOfWeek = firstDayOfMonth.getDay();
+      firstDayOfWeek = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
 
-    // Guardar PDF
-    doc.save(`solicitud_${type.toLowerCase().replace(/\s+/g, '_')}.pdf`);
-    closeModal();
-  }
+      const prevMonthLastDay = new Date(year, month, 0).getDate();
+      for (let i = firstDayOfWeek; i > 0; i--) {
+        const div = document.createElement('div');
+        div.classList.add('day', 'other-month');
+        div.textContent = prevMonthLastDay - i + 1;
+        calendarGrid.appendChild(div);
+      }
 
-  // Botones de navegación
-  document.getElementById('manage-permissions-button').addEventListener('click', () => showPage(calendarPage));
-  document.getElementById('back-to-profile-button').addEventListener('click', () => showPage(profilePage));
+      for (let i = 1; i <= numDaysInMonth; i++) {
+        const div = document.createElement('div');
+        div.classList.add('day');
+        div.textContent = i;
+        const currentDay = new Date(year, month, i);
+        if (currentDay.toDateString() === new Date().toDateString()) div.classList.add('today');
 
-  // Mostrar login al cargar
-  showPage(loginPage);
-</script>
+        const isHoliday = chileanHolidays.some(holiday =>
+          holiday.month === month && holiday.day === i
+        );
+        if (isHoliday) {
+          div.classList.add('holiday');
+          const indicator = document.createElement('span');
+          indicator.classList.add('event-indicator');
+          indicator.textContent = 'Feriado';
+          div.appendChild(indicator);
+        }
+
+        div.addEventListener('click', () => {
+          div.classList.toggle('selected');
+          updateSelectedDays();
+        });
+
+        calendarGrid.appendChild(div);
+      }
+
+      const totalDaysDisplayed = firstDayOfWeek + numDaysInMonth;
+      const remainingDays = 42 - totalDaysDisplayed;
+      for (let i = 1; i <= remainingDays; i++) {
+        if (totalDaysDisplayed + i > 35 && totalDaysDisplayed + i <= 42) {
+          const div = document.createElement('div');
+          div.classList.add('day', 'other-month');
+          div.textContent = i;
+          calendarGrid.appendChild(div);
+        }
+      }
+    }
+
+    function updateSelectedDays() {
+      selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
+      if (selectedDays.length > 0) openModal();
+    }
+
+    function openModal() {
+      selectedDaysCount.textContent = selectedDays.length;
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(16);
+      doc.text("Solicitud de Permiso", 20, 20);
+
+      doc.setFontSize(12);
+      doc.text(`Nombre: Ruth Pérez`, 20, 30);
+      doc.text(`RUT: 12.345.678-9`, 20, 40);
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 50);
+      doc.text(`Días seleccionados: ${selectedDays.join(', ')}`, 20, 60);
+      doc.text(`Tipo de permiso: ${leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text}`, 20, 70);
+
+      doc.save("solicitud_permiso.pdf");
+      closeModal();
+    }
+
+    showPage(loginPage);
+  </script>
 </body>
 </html>
