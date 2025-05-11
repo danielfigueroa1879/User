@@ -501,16 +501,15 @@
     function closeModal() {
       modal.style.display = 'none';
     }
-
 async function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    // Datos del usuario
+    // Datos del usuario (puedes usar localStorage si ya los guardaste)
     const nombre = "Ruth Pérez";
     const rut = "12.345.678-9";
 
-    // Tipo de permiso seleccionado
+    // Tipo de permiso seleccionado en el modal
     const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
 
     // Fechas seleccionadas
@@ -519,8 +518,6 @@ async function generatePDF() {
     const añoActual = currentDate.getFullYear();
     const fechaInicio = `${diasOrdenados[0]} de ${mesActual} de ${añoActual}`;
     const fechaFin = `${diasOrdenados[diasOrdenados.length - 1]} de ${mesActual} de ${añoActual}`;
-
-    // Fecha actual
     const fechaHoy = new Date().toLocaleDateString("es-CL");
 
     // Título centrado
@@ -545,7 +542,7 @@ Desde ya muchas gracias.`;
         startY += 10;
     });
 
-    // Fecha (lado derecho)
+    // Fecha (alineada a la derecha)
     startY += 20;
     doc.text(`La Serena, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
 
@@ -553,16 +550,19 @@ Desde ya muchas gracias.`;
     startY += 10;
     doc.text("Atentamente,", 20, startY);
 
-    // Línea de firma (izquierda)
+    // Línea de firma → ahora alineada a la derecha y más pequeña
     const firmaY = startY + 10;
-    doc.line(20, firmaY, 80, firmaY); // Línea horizontal
-    doc.text("_______________", 20, firmaY + 5); // Texto opcional
+    const startX = doc.internal.pageSize.getWidth() - 160; // Izquierda de la línea
+    const endX = doc.internal.pageSize.getWidth() - 20;     // Derecha de la línea
 
-    // Nombre y RUT alineados a la derecha, debajo de la línea
+    doc.line(startX, firmaY, endX, firmaY); // Dibujar línea horizontal
+    doc.text("_____________________", startX, firmaY + 5); // Texto opcional para reforzar la firma
+
+    // Nombre y RUT alineados a la derecha, justo debajo de la línea
     const textoFinal = `${nombre}\n${rut}`;
-    doc.text(textoFinal, doc.internal.pageSize.getWidth() - 20, firmaY + 5, { align: "right" });
+    doc.text(textoFinal, endX, firmaY + 5, { align: "right" });
 
-    // Guardar el PDF
+    // Guardar PDF
     doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
     closeModal();
 }
