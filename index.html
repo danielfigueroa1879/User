@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Portal de Usuario</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins :wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins :wght@400;600&display=swap" />
   <style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
@@ -81,10 +80,6 @@
       transform: translateY(-5px);
     }
 
-    .page-container.movable {
-      transition: transform 0.1s ease;
-    }
-
     .form-group {
       margin-bottom: 15px;
     }
@@ -135,8 +130,7 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    #profile-page h2,
-    #login-page h2 {
+    #profile-page h2 {
       text-align: center;
       color: #333;
       margin-bottom: 20px;
@@ -152,10 +146,6 @@
 
     .profile-info strong {
       color: #333;
-    }
-
-    #profile-page button {
-      margin-top: 30px;
     }
 
     #calendar-page .calendar-header {
@@ -257,6 +247,7 @@
     }
 
     #calendar-page .day.holiday .event-indicator {
+      content: 'Feriado';
       color: rgba(255, 255, 255, 0.9);
     }
 
@@ -291,12 +282,51 @@
         font-size: 0.9em;
       }
     }
+
+    /* Estilo para el modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .modal-content h3 {
+      margin-bottom: 10px;
+    }
+
+    .modal-content select,
+    .modal-content button {
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      font-size: 1em;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Fondo animado -->
   <div class="cloud-background"></div>
 
-  <div id="login-page" class="page-container movable">
+  <!-- Contenedores -->
+  <div id="login-page" class="page-container">
     <h2>Iniciar Sesión</h2>
     <div class="form-group">
       <label for="email">Correo Electrónico:</label>
@@ -309,22 +339,20 @@
     <button id="login-button">Entrar</button>
   </div>
 
-  <div id="profile-page" class="page-container movable">
+  <div id="profile-page" class="page-container">
     <h2>Mi Perfil</h2>
     <div class="profile-info">
       <p><strong>Nombre Completo:</strong> Ruth Pérez</p>
       <p><strong>RUT:</strong> 12.345.678-9</p>
-      <p><strong>Fecha de Nacimiento:</strong> 15/07/1990</p>
-      <p><strong>Fecha de Ingreso:</strong> 01/09/2020</p>
-      <p><strong>Tiempo en la Institución:</strong> 4 años 8 meses</p>
       <p><strong>Dirección:</strong> Calle Falsa 123, Santiago</p>
       <p><strong>Teléfono:</strong> +56 9 1234 5678</p>
       <p><strong>Correo:</strong> ruth.perez@example.com</p>
     </div>
     <button id="manage-permissions-button">Gestionar Permisos y Feriados</button>
+    <button onclick="showPage(loginPage)" style="margin-top: 10px;">⬅️ Atrás</button>
   </div>
 
-  <div id="calendar-page" class="page-container movable">
+  <div id="calendar-page" class="page-container">
     <div class="calendar-header">
       <div class="nav-buttons">
         <button id="prevMonth">Anterior</button>
@@ -332,18 +360,29 @@
       </div>
       <h2 id="currentMonthYear"></h2>
     </div>
-    <div class="calendar-grid">
-      <div class="day-name">Lun</div>
-      <div class="day-name">Mar</div>
-      <div class="day-name">Mié</div>
-      <div class="day-name">Jue</div>
-      <div class="day-name">Vie</div>
-      <div class="day-name">Sáb</div>
-      <div class="day-name">Dom</div>
-    </div>
+    <div class="calendar-grid"></div>
     <button id="back-to-profile-button" class="back-button">Volver al Perfil</button>
   </div>
 
+  <!-- Modal para solicitar permiso -->
+  <div class="modal" id="request-modal">
+    <div class="modal-content">
+      <h3>Seleccionaste <span id="selected-days-count">0</span> día(s)</h3>
+      <select id="leave-type">
+        <option value="admin">Permiso Administrativo</option>
+        <option value="sick">Licencia Médica</option>
+        <option value="marriage">Permiso por Matrimonio</option>
+        <option value="holiday">Feriado</option>
+      </select>
+      <button onclick="generatePDF()">Descargar PDF</button>
+      <button onclick="closeModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
+
+  <!-- Script principal -->
   <script>
     const loginPage = document.getElementById('login-page');
     const profilePage = document.getElementById('profile-page');
@@ -359,7 +398,12 @@
     const prevMonthButton = document.getElementById('prevMonth');
     const nextMonthButton = document.getElementById('nextMonth');
 
+    const modal = document.getElementById('request-modal');
+    const selectedDaysCount = document.getElementById('selected-days-count');
+    const leaveTypeSelect = document.getElementById('leave-type');
+
     let currentDate = new Date();
+    let selectedDays = [];
 
     const chileanHolidays = [
       { month: 0, day: 1, name: "Año Nuevo" },
@@ -378,44 +422,9 @@
       { month: 11, day: 25, name: "Navidad" }
     ];
 
-    const simulatedLeaveDays = [
-      { year: 2025, month: 4, day: 10, type: 'admin' },
-      { year: 2025, month: 4, day: 11, type: 'admin' },
-      { year: 2025, month: 5, day: 5, type: 'sick' },
-      { year: 2025, month: 9, day: 20, type: 'marriage' },
-    ];
-
-    let mouseX = 0, mouseY = 0;
-    let targetX = 0, targetY = 0;
-
-    function initParallax(container) {
-      if (!container) return;
-
-      container.style.transform = 'translate(0px, 0px)';
-      container.style.transition = 'none';
-
-      function animate() {
-        targetX += (mouseX - targetX) * 0.05;
-        targetY += (mouseY - targetY) * 0.05;
-        container.style.transform = `translate(${targetX}px, ${targetY}px)`;
-        requestAnimationFrame(animate);
-      }
-
-      window.addEventListener("mousemove", (e) => {
-        const rect = container.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        mouseX = (e.clientX - centerX) * 0.05;
-        mouseY = (e.clientY - centerY) * 0.05;
-      });
-
-      animate();
-    }
-
     function showPage(pageElement) {
       [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
       pageElement.style.display = 'block';
-      initParallax(pageElement);
       if (pageElement === calendarPage) renderCalendar(currentDate);
     }
 
@@ -428,6 +437,16 @@
 
     managePermissionsButton.addEventListener('click', () => showPage(calendarPage));
     backToProfileButton.addEventListener('click', () => showPage(profilePage));
+
+    prevMonthButton.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar(currentDate);
+    });
+
+    nextMonthButton.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar(currentDate);
+    });
 
     function renderCalendar(date) {
       calendarGrid.innerHTML = '';
@@ -476,22 +495,9 @@
           div.appendChild(indicator);
         }
 
-        const leaveDay = simulatedLeaveDays.find(leave =>
-          leave.year === year && leave.month === month && leave.day === i
-        );
-        if (leaveDay) {
-          div.classList.add('leave', leaveDay.type);
-          const indicator = document.createElement('span');
-          indicator.classList.add('event-indicator');
-          if (leaveDay.type === 'admin') indicator.textContent = 'Adm.';
-          if (leaveDay.type === 'sick') indicator.textContent = 'Enf.';
-          if (leaveDay.type === 'marriage') indicator.textContent = 'Mat.';
-          div.appendChild(indicator);
-        }
-
         div.addEventListener('click', () => {
           div.classList.toggle('selected');
-          console.log(`Día ${i} de ${currentMonthYear.textContent} seleccionado/deseleccionado`);
+          updateSelectedDays();
         });
 
         calendarGrid.appendChild(div);
@@ -509,19 +515,39 @@
       }
     }
 
-    prevMonthButton.addEventListener('click', () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar(currentDate);
-    });
+    function updateSelectedDays() {
+      selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
+      if (selectedDays.length > 0) openModal();
+    }
 
-    nextMonthButton.addEventListener('click', () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      renderCalendar(currentDate);
-    });
+    function openModal() {
+      selectedDaysCount.textContent = selectedDays.length;
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(16);
+      doc.text("Solicitud de Permiso", 20, 20);
+
+      doc.setFontSize(12);
+      doc.text(`Nombre: Ruth Pérez`, 20, 30);
+      doc.text(`RUT: 12.345.678-9`, 20, 40);
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 50);
+      doc.text(`Días seleccionados: ${selectedDays.join(', ')}`, 20, 60);
+      doc.text(`Tipo de permiso: ${leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text}`, 20, 70);
+
+      doc.save("solicitud_permiso.pdf");
+      closeModal();
+    }
 
     showPage(loginPage);
   </script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
 </body>
 </html>
