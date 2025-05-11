@@ -278,7 +278,7 @@
     <div class="profile-info">
       <p><strong>Nombre Completo:</strong> <span id="nombre-display">Ruth Pérez</span></p>
       <p><strong>RUT:</strong> <span id="rut-display">12.345.678-9</span></p>
-      <p><strong>Dirección:</strong> <span id="direccion-display">Calle Falsa 123, Santiago</span></p>
+      <p><strong>Dirección:</strong> <span id="direccion-display">Calle Falsa 123, La Serena</span></p>
       <p><strong>Teléfono:</strong> <span id="telefono-display">+56 9 1234 5678</span></p>
       <p><strong>Correo:</strong> <span id="correo-display">ruth.perez@example.com</span></p>
     </div>
@@ -370,252 +370,290 @@
     let selectedDays = [];
 
     const chileanHolidays = [
-      { month: 0, day: 1, name: "Año Nuevo" },
-      { month: 3, day: 18, name: "Viernes Santo" },
-      { month: 3, day: 19, name: "Sábado Santo" },
-      { month: 4, day: 1, name: "Día del Trabajador" },
-      { month: 4, day: 21, name: "Día de las Glorias Navales" },
-      { month: 5, day: 26, name: "San Pedro y San Pablo" },
-      { month: 6, day: 16, name: "Virgen del Carmen" },
-      { month: 7, day: 15, name: "Asunción de la Virgen" },
-      { month: 8, day: 18, name: "Independencia Nacional" },
-      { month: 8, day: 19, name: "Día de las Glorias del Ejército" },
-      { month: 9, day: 31, name: "Día Nacional de las Iglesias Evangélicas y Protestantes" },
-      { month: 10, day: 1, name: "Día de Todos los Santos" },
-      { month: 11, day: 8, name: "Inmaculada Concepción" },
-      { month: 11, day: 25, name: "Navidad" }
+        { month: 0, day: 1, name: "Año Nuevo" },
+        { month: 3, day: 18, name: "Viernes Santo" },
+        { month: 3, day: 19, name: "Sábado Santo" },
+        { month: 4, day: 1, name: "Día del Trabajador" },
+        { month: 4, day: 21, name: "Día de las Glorias Navales" },
+        { month: 5, day: 26, name: "San Pedro y San Pablo" },
+        { month: 6, day: 16, name: "Virgen del Carmen" },
+        { month: 7, day: 15, name: "Asunción de la Virgen" },
+        { month: 8, day: 18, name: "Independencia Nacional" },
+        { month: 8, day: 19, name: "Día de las Glorias del Ejército" },
+        { month: 9, day: 31, name: "Día Nacional de las Iglesias Evangélicas y Protestantes" },
+        { month: 10, day: 1, name: "Día de Todos los Santos" },
+        { month: 11, day: 8, name: "Inmaculada Concepción" },
+        { month: 11, day: 25, name: "Navidad" }
     ];
 
     function showPage(pageElement) {
-      [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
-      pageElement.style.display = 'block';
-      if (pageElement === calendarPage) renderCalendar(currentDate);
+        [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
+        pageElement.style.display = 'block';
+        if (pageElement === calendarPage) renderCalendar(currentDate);
     }
 
     loginButton.addEventListener('click', () => {
-      const email = emailInput.value;
-      const password = passwordInput.value;
-      if (email && password) showPage(profilePage);
-      else alert('Por favor, ingresa tu correo y contraseña.');
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        if (email && password) {
+            localStorage.setItem('loggedIn', 'true');
+            showPage(profilePage);
+        } else {
+            alert('Por favor, ingresa tu correo y contraseña.');
+        }
     });
 
     managePermissionsButton.addEventListener('click', () => showPage(calendarPage));
     backToProfileButton.addEventListener('click', () => showPage(profilePage));
 
     prevMonthButton.addEventListener('click', () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar(currentDate);
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate);
     });
 
     nextMonthButton.addEventListener('click', () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      renderCalendar(currentDate);
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate);
     });
 
     function renderCalendar(date) {
-      calendarGrid.innerHTML = '';
-      const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-      dayNames.forEach(name => {
-        const div = document.createElement('div');
-        div.classList.add('day-name');
-        div.textContent = name;
-        calendarGrid.appendChild(div);
-      });
-
-      const year = date.getFullYear();
-      const month = date.getMonth();
-      currentMonthYear.textContent = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(date);
-
-      const firstDayOfMonth = new Date(year, month, 1);
-      const lastDayOfMonth = new Date(year, month + 1, 0);
-      const numDaysInMonth = lastDayOfMonth.getDate();
-
-      let firstDayOfWeek = firstDayOfMonth.getDay();
-      firstDayOfWeek = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
-
-      const prevMonthLastDay = new Date(year, month, 0).getDate();
-      for (let i = firstDayOfWeek; i > 0; i--) {
-        const div = document.createElement('div');
-        div.classList.add('day', 'other-month');
-        div.textContent = prevMonthLastDay - i + 1;
-        calendarGrid.appendChild(div);
-      }
-
-      for (let i = 1; i <= numDaysInMonth; i++) {
-        const div = document.createElement('div');
-        div.classList.add('day');
-        div.textContent = i;
-        const currentDay = new Date(year, month, i);
-        if (currentDay.toDateString() === new Date().toDateString()) div.classList.add('today');
-
-        const isHoliday = chileanHolidays.some(holiday =>
-          holiday.month === month && holiday.day === i
-        );
-        if (isHoliday) {
-          div.classList.add('holiday');
-          const indicator = document.createElement('span');
-          indicator.classList.add('event-indicator');
-          indicator.textContent = 'Feriado';
-          div.appendChild(indicator);
-        }
-
-        div.addEventListener('click', () => {
-          div.classList.toggle('selected');
-          updateSelectedDays();
+        calendarGrid.innerHTML = '';
+        const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        dayNames.forEach(name => {
+            const div = document.createElement('div');
+            div.classList.add('day-name');
+            div.textContent = name;
+            calendarGrid.appendChild(div);
         });
 
-        calendarGrid.appendChild(div);
-      }
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        currentMonthYear.textContent = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(date);
 
-      const totalDaysDisplayed = firstDayOfWeek + numDaysInMonth;
-      const remainingDays = 42 - totalDaysDisplayed;
-      for (let i = 1; i <= remainingDays; i++) {
-        if (totalDaysDisplayed + i > 35 && totalDaysDisplayed + i <= 42) {
-          const div = document.createElement('div');
-          div.classList.add('day', 'other-month');
-          div.textContent = i;
-          calendarGrid.appendChild(div);
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        const numDaysInMonth = lastDayOfMonth.getDate();
+
+        let firstDayOfWeek = firstDayOfMonth.getDay();
+        firstDayOfWeek = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+
+        const prevMonthLastDay = new Date(year, month, 0).getDate();
+        for (let i = firstDayOfWeek; i > 0; i--) {
+            const div = document.createElement('div');
+            div.classList.add('day', 'other-month');
+            div.textContent = prevMonthLastDay - i + 1;
+            calendarGrid.appendChild(div);
         }
-      }
+
+        for (let i = 1; i <= numDaysInMonth; i++) {
+            const div = document.createElement('div');
+            div.classList.add('day');
+            div.textContent = i;
+            const currentDay = new Date(year, month, i);
+            if (currentDay.toDateString() === new Date().toDateString()) div.classList.add('today');
+
+            const isHoliday = chileanHolidays.some(holiday =>
+                holiday.month === month && holiday.day === i
+            );
+            if (isHoliday) {
+                div.classList.add('holiday');
+                const indicator = document.createElement('span');
+                indicator.classList.add('event-indicator');
+                indicator.textContent = 'Feriado';
+                div.appendChild(indicator);
+            }
+
+            div.addEventListener('click', () => {
+                div.classList.toggle('selected');
+                updateSelectedDays();
+            });
+
+            calendarGrid.appendChild(div);
+        }
+
+        const totalDaysDisplayed = firstDayOfWeek + numDaysInMonth;
+        const remainingDays = 42 - totalDaysDisplayed;
+        for (let i = 1; i <= remainingDays; i++) {
+            if (totalDaysDisplayed + i > 35 && totalDaysDisplayed + i <= 42) {
+                const div = document.createElement('div');
+                div.classList.add('day', 'other-month');
+                div.textContent = i;
+                calendarGrid.appendChild(div);
+            }
+        }
     }
 
     function updateSelectedDays() {
-      selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
-      if (selectedDays.length > 0) openModal();
+        selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
+        if (selectedDays.length > 0) openModal();
     }
 
     function openModal() {
-      selectedDaysCount.textContent = selectedDays.length;
-      modal.style.display = 'flex';
+        selectedDaysCount.textContent = selectedDays.length;
+        modal.style.display = 'flex';
     }
 
     function closeModal() {
-      modal.style.display = 'none';
+        modal.style.display = 'none';
     }
 
     async function generatePDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
 
-      const nombre = document.getElementById('nombre-display').textContent;
-      const rut = document.getElementById('rut-display').textContent;
-      const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
+        // Cargar datos del usuario desde localStorage o valores por defecto
+        const nombre = localStorage.getItem('userName') || "Ruth Pérez";
+        const rut = localStorage.getItem('userRut') || "12.345.678-9";
 
-      const diasOrdenados = [...selectedDays].sort((a, b) => a - b);
-      const mesActual = new Date(currentDate).toLocaleString("es-ES", { month: "long" });
-      const añoActual = currentDate.getFullYear();
+        const diasOrdenados = [...selectedDays].sort((a, b) => a - b);
+        const mesActual = new Date(currentDate).toLocaleString("es-ES", { month: "long" });
+        const añoActual = currentDate.getFullYear();
 
-      const fechaInicio = `${diasOrdenados[0]} de ${mesActual} de ${añoActual}`;
-      const fechaFin = `${diasOrdenados[diasOrdenados.length - 1]} de ${mesActual} de ${añoActual}`;
+        const fechaInicio = `${diasOrdenados[0]} de ${mesActual} de ${añoActual}`;
+        const fechaFin = `${diasOrdenados[diasOrdenados.length - 1]} de ${mesActual} de ${añoActual}`;
+        const fechaHoy = new Date().toLocaleDateString("es-CL");
+        const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
 
-      // Título centrado
-      doc.setFontSize(14);
-      doc.setFont(undefined, "bold");
-      doc.text(`Solicitud de ${tipoPermiso}`, doc.internal.pageSize.getWidth() / 2, 30, { align: "center" });
+        // Título centrado
+        doc.setFontSize(14);
+        doc.setFont(undefined, "bold");
+        doc.text(`Solicitud de ${tipoPermiso}`, doc.internal.pageSize.getWidth() / 2, 30, { align: "center" });
 
-      // Cuerpo del oficio
-      doc.setFontSize(12);
-      doc.setFont(undefined, "normal");
+        // Cuerpo del oficio
+        doc.setFontSize(12);
+        doc.setFont(undefined, "normal");
 
-      const cuerpoOficio = `
+        const cuerpoOficio = `
 Se solicita tener a bien aprobar mi día de ${tipoPermiso.toLowerCase()} correspondiente al periodo comprendido entre el ${fechaInicio} y el ${fechaFin}.
             
 Desde ya muchas gracias.`;
 
-      const lines = doc.splitTextToSize(cuerpoOficio, 170);
-      let startY = 40;
+        const lines = doc.splitTextToSize(cuerpoOficio, 170);
+        let startY = 40;
 
-      lines.forEach(line => {
-        doc.text(line, 20, startY);
+        lines.forEach(line => {
+            doc.text(line, 20, startY);
+            startY += 10;
+        });
+
+        // Fecha (lado derecho)
+        startY += 20;
+        doc.text(`La Serena, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
+
+        // Saludo final
         startY += 10;
-      });
+        doc.text("Atentamente,", 20, startY);
 
-      // Fecha (lado derecho)
-      const fechaHoy = new Date().toLocaleDateString("es-CL");
-      startY += 20;
-      doc.text(`Santiago, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
+        // Línea de firma
+        const firmaY = startY + 10;
+        const startX = 20;
+        const endX = 80;
+        doc.line(startX, firmaY, endX, firmaY); // Línea horizontal
 
-      // Saludo final
-      startY += 10;
-      doc.text("Atentamente,", 20, startY);
+        // Nombre y RUT alineados a la derecha, debajo de la firma
+        const textoFinal = `${nombre}\n${rut}`;
+        doc.text(textoFinal, doc.internal.pageSize.getWidth() - 20, firmaY + 5, { align: "right" });
 
-      // Línea de firma
-      const firmaY = startY + 10;
-      const startX = 20;
-      const endX = 80;
-      doc.line(startX, firmaY, endX, firmaY);
-      doc.text("_____________________", 20, firmaY + 5);
-
-      // Nombre y RUT alineados a la derecha
-      const textoFinal = `${nombre}\n${rut}`;
-      doc.text(textoFinal, endX + 10, firmaY + 5, { align: "right" });
-
-      // Guardar el PDF
-      doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
-      closeModal();
+        // Guardar PDF
+        doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
+        closeModal();
     }
 
-    // Funcionalidad de edición de perfil
+    // Funciones para editar y guardar datos del perfil
     const editProfileButton = document.getElementById('edit-profile-button');
     const editProfileForm = document.getElementById('edit-profile-form');
-    const profileData = {
-      nombreDisplay: document.getElementById('nombre-display'),
-      rutDisplay: document.getElementById('rut-display'),
-      direccionDisplay: document.getElementById('direccion-display'),
-      telefonoDisplay: document.getElementById('telefono-display'),
-      correoDisplay: document.getElementById('correo-display'),
-      profilePic: document.getElementById('profile-pic')
+    const profileDataElements = {
+        nombre: document.getElementById('nombre-display'),
+        rut: document.getElementById('rut-display'),
+        direccion: document.getElementById('direccion-display'),
+        telefono: document.getElementById('telefono-display'),
+        correo: document.getElementById('correo-display'),
+        profilePic: document.getElementById('profile-pic')
     };
 
-    const inputs = {
-      nombre: document.getElementById('nombre-input'),
-      rut: document.getElementById('rut-input'),
-      direccion: document.getElementById('direccion-input'),
-      telefono: document.getElementById('telefono-input'),
-      correo: document.getElementById('correo-input'),
-      foto: document.getElementById('foto-input')
+    const inputFields = {
+        nombre: document.getElementById('nombre-input'),
+        rut: document.getElementById('rut-input'),
+        direccion: document.getElementById('direccion-input'),
+        telefono: document.getElementById('telefono-input'),
+        correo: document.getElementById('correo-input'),
+        foto: document.getElementById('foto-input')
     };
 
     editProfileButton.addEventListener('click', () => {
-      editProfileForm.style.display = 'block';
-      inputs.nombre.value = profileData.nombreDisplay.textContent;
-      inputs.rut.value = profileData.rutDisplay.textContent;
-      inputs.direccion.value = profileData.direccionDisplay.textContent;
-      inputs.telefono.value = profileData.telefonoDisplay.textContent;
-      inputs.correo.value = profileData.correoDisplay.textContent;
+        editProfileForm.style.display = 'block';
+
+        inputFields.nombre.value = profileDataElements.nombre.textContent;
+        inputFields.rut.value = profileDataElements.rut.textContent;
+        inputFields.direccion.value = profileDataElements.direccion.textContent;
+        inputFields.telefono.value = profileDataElements.telefono.textContent;
+        inputFields.correo.value = profileDataElements.correo.textContent;
     });
 
     function hideEditForm() {
-      editProfileForm.style.display = 'none';
+        editProfileForm.style.display = 'none';
     }
 
     function saveProfile() {
-      const nuevoNombre = inputs.nombre.value.trim();
-      const nuevoRut = inputs.rut.value.trim();
-      const nuevaDireccion = inputs.direccion.value.trim();
-      const nuevoTelefono = inputs.telefono.value.trim();
-      const nuevoCorreo = inputs.correo.value.trim();
-      const fotoInput = inputs.foto.files[0];
+        const nuevoNombre = inputFields.nombre.value.trim();
+        const nuevoRut = inputFields.rut.value.trim();
+        const nuevaDireccion = inputFields.direccion.value.trim();
+        const nuevoTelefono = inputFields.telefono.value.trim();
+        const nuevoCorreo = inputFields.correo.value.trim();
+        const fotoInput = inputFields.foto.files[0];
 
-      if (nuevoNombre) profileData.nombreDisplay.textContent = nuevoNombre;
-      if (nuevoRut) profileData.rutDisplay.textContent = nuevoRut;
-      if (nuevaDireccion) profileData.direccionDisplay.textContent = nuevaDireccion;
-      if (nuevoTelefono) profileData.telefonoDisplay.textContent = nuevoTelefono;
-      if (nuevoCorreo) profileData.correoDisplay.textContent = nuevoCorreo;
+        if (nuevoNombre) {
+            profileDataElements.nombre.textContent = nuevoNombre;
+            localStorage.setItem('userName', nuevoNombre);
+        }
+        if (nuevoRut) {
+            profileDataElements.rut.textContent = nuevoRut;
+            localStorage.setItem('userRut', nuevoRut);
+        }
+        if (nuevaDireccion) {
+            profileDataElements.direccion.textContent = nuevaDireccion;
+            localStorage.setItem('userDireccion', nuevaDireccion);
+        }
+        if (nuevoTelefono) {
+            profileDataElements.telefono.textContent = nuevoTelefono;
+            localStorage.setItem('userTelefono', nuevoTelefono);
+        }
+        if (nuevoCorreo) {
+            profileDataElements.correo.textContent = nuevoCorreo;
+            localStorage.setItem('userCorreo', nuevoCorreo);
+        }
 
-      if (fotoInput) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          profileData.profilePic.src = e.target.result;
-        };
-        reader.readAsDataURL(fotoInput);
-      }
+        if (fotoInput) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profileDataElements.profilePic.src = e.target.result;
+                localStorage.setItem('profilePhoto', e.target.result);
+            };
+            reader.readAsDataURL(fotoInput);
+        }
 
-      hideEditForm();
+        hideEditForm();
     }
 
-    // Mostrar login al cargar
+    // Cargar datos guardados al iniciar
+    window.onload = () => {
+        const savedName = localStorage.getItem('userName');
+        const savedRut = localStorage.getItem('userRut');
+        const savedDireccion = localStorage.getItem('userDireccion');
+        const savedTelefono = localStorage.getItem('userTelefono');
+        const savedCorreo = localStorage.getItem('userCorreo');
+        const savedPhoto = localStorage.getItem('profilePhoto');
+
+        if (savedName) profileDataElements.nombre.textContent = savedName;
+        if (savedRut) profileDataElements.rut.textContent = savedRut;
+        if (savedDireccion) profileDataElements.direccion.textContent = savedDireccion;
+        if (savedTelefono) profileDataElements.telefono.textContent = savedTelefono;
+        if (savedCorreo) profileDataElements.correo.textContent = savedCorreo;
+        if (savedPhoto) profileDataElements.profilePic.src = savedPhoto;
+    };
+
+    // Mostrar página de login al cargar
     showPage(loginPage);
-  </script>
+</script>
 </body>
 </html>
