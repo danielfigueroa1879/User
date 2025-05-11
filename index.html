@@ -328,11 +328,10 @@
     </div>
   </div>
 
-  <!-- jsPDF CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
+<!-- jsPDF CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
 
-  <!-- Script principal -->
-  <script>
+<script>
     const loginPage = document.getElementById('login-page');
     const profilePage = document.getElementById('profile-page');
     const calendarPage = document.getElementById('calendar-page');
@@ -346,7 +345,6 @@
     const currentMonthYear = document.getElementById('currentMonthYear');
     const prevMonthButton = document.getElementById('prevMonth');
     const nextMonthButton = document.getElementById('nextMonth');
-    const confirmSelectionButton = document.getElementById('confirm-selection'); // Nuevo botón
 
     const modal = document.getElementById('request-modal');
     const selectedDaysCount = document.getElementById('selected-days-count');
@@ -356,156 +354,201 @@
     let selectedDays = [];
 
     const chileanHolidays = [
-      { month: 0, day: 1, name: "Año Nuevo" },
-      { month: 3, day: 18, name: "Viernes Santo" },
-      { month: 3, day: 19, name: "Sábado Santo" },
-      { month: 4, day: 1, name: "Día del Trabajador" },
-      { month: 4, day: 21, name: "Día de las Glorias Navales" },
-      { month: 5, day: 26, name: "San Pedro y San Pablo" },
-      { month: 6, day: 16, name: "Virgen del Carmen" },
-      { month: 7, day: 15, name: "Asunción de la Virgen" },
-      { month: 8, day: 18, name: "Independencia Nacional" },
-      { month: 8, day: 19, name: "Día de las Glorias del Ejército" },
-      { month: 9, day: 31, name: "Día Nacional de las Iglesias Evangélicas y Protestantes" },
-      { month: 10, day: 1, name: "Día de Todos los Santos" },
-      { month: 11, day: 8, name: "Inmaculada Concepción" },
-      { month: 11, day: 25, name: "Navidad" }
+        { month: 0, day: 1, name: "Año Nuevo" },
+        { month: 3, day: 18, name: "Viernes Santo" },
+        { month: 3, day: 19, name: "Sábado Santo" },
+        { month: 4, day: 1, name: "Día del Trabajador" },
+        { month: 4, day: 21, name: "Día de las Glorias Navales" },
+        { month: 5, day: 26, name: "San Pedro y San Pablo" },
+        { month: 6, day: 16, name: "Virgen del Carmen" },
+        { month: 7, day: 15, name: "Asunción de la Virgen" },
+        { month: 8, day: 18, name: "Independencia Nacional" },
+        { month: 8, day: 19, name: "Día de las Glorias del Ejército" },
+        { month: 9, day: 31, name: "Día Nacional de las Iglesias Evangélicas y Protestantes" },
+        { month: 10, day: 1, name: "Día de Todos los Santos" },
+        { month: 11, day: 8, name: "Inmaculada Concepción" },
+        { month: 11, day: 25, name: "Navidad" }
     ];
 
     function showPage(pageElement) {
-      [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
-      pageElement.style.display = 'block';
-      if (pageElement === calendarPage) renderCalendar(currentDate);
+        [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
+        pageElement.style.display = 'block';
+        if (pageElement === calendarPage) renderCalendar(currentDate);
     }
 
     loginButton.addEventListener('click', () => {
-      const email = emailInput.value;
-      const password = passwordInput.value;
-      if (email && password) showPage(profilePage);
-      else alert('Por favor, ingresa tu correo y contraseña.');
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        if (email && password) showPage(profilePage);
+        else alert('Por favor, ingresa tu correo y contraseña.');
     });
 
     managePermissionsButton.addEventListener('click', () => showPage(calendarPage));
     backToProfileButton.addEventListener('click', () => showPage(profilePage));
 
     prevMonthButton.addEventListener('click', () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar(currentDate);
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate);
     });
 
     nextMonthButton.addEventListener('click', () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      renderCalendar(currentDate);
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate);
     });
 
     function renderCalendar(date) {
-      calendarGrid.innerHTML = '';
-      const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-      dayNames.forEach(name => {
-        const div = document.createElement('div');
-        div.classList.add('day-name');
-        div.textContent = name;
-        calendarGrid.appendChild(div);
-      });
-
-      const year = date.getFullYear();
-      const month = date.getMonth();
-      currentMonthYear.textContent = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(date);
-
-      const firstDayOfMonth = new Date(year, month, 1);
-      const lastDayOfMonth = new Date(year, month + 1, 0);
-      const numDaysInMonth = lastDayOfMonth.getDate();
-
-      let firstDayOfWeek = firstDayOfMonth.getDay();
-      firstDayOfWeek = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
-
-      const prevMonthLastDay = new Date(year, month, 0).getDate();
-      for (let i = firstDayOfWeek; i > 0; i--) {
-        const div = document.createElement('div');
-        div.classList.add('day', 'other-month');
-        div.textContent = prevMonthLastDay - i + 1;
-        calendarGrid.appendChild(div);
-      }
-
-      for (let i = 1; i <= numDaysInMonth; i++) {
-        const div = document.createElement('div');
-        div.classList.add('day');
-        div.textContent = i;
-        const currentDay = new Date(year, month, i);
-        if (currentDay.toDateString() === new Date().toDateString()) div.classList.add('today');
-
-        const isHoliday = chileanHolidays.some(holiday =>
-          holiday.month === month && holiday.day === i
-        );
-        if (isHoliday) {
-          div.classList.add('holiday');
-          const indicator = document.createElement('span');
-          indicator.classList.add('event-indicator');
-          indicator.textContent = 'Feriado';
-          div.appendChild(indicator);
-        }
-
-        div.addEventListener('click', () => {
-          div.classList.toggle('selected');
-          updateSelectedDays();
+        calendarGrid.innerHTML = '';
+        const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        dayNames.forEach(name => {
+            const div = document.createElement('div');
+            div.classList.add('day-name');
+            div.textContent = name;
+            calendarGrid.appendChild(div);
         });
 
-        calendarGrid.appendChild(div);
-      }
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        currentMonthYear.textContent = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(date);
 
-      const totalDaysDisplayed = firstDayOfWeek + numDaysInMonth;
-      const remainingDays = 42 - totalDaysDisplayed;
-      for (let i = 1; i <= remainingDays; i++) {
-        if (totalDaysDisplayed + i > 35 && totalDaysDisplayed + i <= 42) {
-          const div = document.createElement('div');
-          div.classList.add('day', 'other-month');
-          div.textContent = i;
-          calendarGrid.appendChild(div);
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        const numDaysInMonth = lastDayOfMonth.getDate();
+
+        let firstDayOfWeek = firstDayOfMonth.getDay();
+        firstDayOfWeek = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+
+        const prevMonthLastDay = new Date(year, month, 0).getDate();
+        for (let i = firstDayOfWeek; i > 0; i--) {
+            const div = document.createElement('div');
+            div.classList.add('day', 'other-month');
+            div.textContent = prevMonthLastDay - i + 1;
+            calendarGrid.appendChild(div);
         }
-      }
+
+        for (let i = 1; i <= numDaysInMonth; i++) {
+            const div = document.createElement('div');
+            div.classList.add('day');
+            div.textContent = i;
+            const currentDay = new Date(year, month, i);
+
+            if (currentDay.toDateString() === new Date().toDateString()) {
+                div.classList.add('today');
+            }
+
+            const isHoliday = chileanHolidays.some(holiday =>
+                holiday.month === month && holiday.day === i
+            );
+            if (isHoliday) {
+                div.classList.add('holiday');
+                const indicator = document.createElement('span');
+                indicator.classList.add('event-indicator');
+                indicator.textContent = 'Feriado';
+                div.appendChild(indicator);
+            }
+
+            div.addEventListener('click', () => {
+                div.classList.toggle('selected');
+                updateSelectedDays();
+            });
+
+            calendarGrid.appendChild(div);
+        }
+
+        const totalDaysDisplayed = firstDayOfWeek + numDaysInMonth;
+        const remainingDays = 42 - totalDaysDisplayed;
+        for (let i = 1; i <= remainingDays; i++) {
+            if (totalDaysDisplayed + i > 35 && totalDaysDisplayed + i <= 42) {
+                const div = document.createElement('div');
+                div.classList.add('day', 'other-month');
+                div.textContent = i;
+                calendarGrid.appendChild(div);
+            }
+        }
     }
 
     function updateSelectedDays() {
-      selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
-      confirmSelectionButton.style.display = selectedDays.length > 0 ? 'block' : 'none';
-
-      if (selectedDays.length > 0) openModal();
+        selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
+        if (selectedDays.length > 0) openModal();
     }
 
     function openModal() {
-      selectedDaysCount.textContent = selectedDays.length;
-      modal.style.display = 'flex';
+        selectedDaysCount.textContent = selectedDays.length;
+        modal.style.display = 'flex';
     }
 
     function closeModal() {
-      modal.style.display = 'none';
+        modal.style.display = 'none';
     }
 
     async function generatePDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
 
-      doc.setFontSize(16);
-      doc.text("Solicitud de Permiso", 20, 20);
+        // Datos del usuario
+        const nombre = "Ruth Pérez";
+        const rut = "12.345.678-9";
 
-      doc.setFontSize(12);
-      doc.text(`Nombre: Ruth Pérez`, 20, 30);
-      doc.text(`RUT: 12.345.678-9`, 20, 40);
-      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 50);
-      doc.text(`Días seleccionados: ${selectedDays.join(', ')}`, 20, 60);
-      doc.text(`Tipo de permiso: ${leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text}`, 20, 70);
+        // Tipo de permiso
+        const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
 
-      doc.save("solicitud_permiso.pdf");
-      closeModal();
+        // Fechas seleccionadas
+        const diasOrdenados = [...selectedDays].sort((a, b) => a - b);
+        const mesActual = new Date(currentDate).toLocaleString("es-ES", { month: "long" });
+        const añoActual = currentDate.getFullYear();
+
+        const fechaInicio = `${diasOrdenados[0]} de ${mesActual} de ${añoActual}`;
+        const fechaFin = `${diasOrdenados[diasOrdenados.length - 1]} de ${mesActual} de ${añoActual}`;
+
+        const fechaHoy = new Date().toLocaleDateString("es-CL");
+
+        // Título del documento
+        doc.setFontSize(14);
+        doc.setFont(undefined, "bold");
+        doc.text(`Solicitud de ${tipoPermiso}`, doc.internal.pageSize.getWidth() / 2, 30, { align: "center" });
+
+        // Cuerpo del oficio
+        doc.setFontSize(12);
+        doc.setFont(undefined, "normal");
+        const cuerpoOficio = `
+Se solicita tener a bien aprobar mi día de ${tipoPermiso.toLowerCase()} correspondiente al periodo comprendido entre el ${fechaInicio} y el ${fechaFin}.
+            
+Desde ya muchas gracias.`;
+
+        const lines = doc.splitTextToSize(cuerpoOficio, 170);
+        let startY = 40;
+
+        lines.forEach(line => {
+            doc.text(line, 20, startY);
+            startY += 10;
+        });
+
+        // Fecha
+        startY += 20;
+        doc.text(`Santiago, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
+
+        // Saludo final
+        startY += 10;
+        doc.text("Saludos cordiales,", 20, startY);
+
+        // Nombre y RUT
+        startY += 20;
+        doc.text(nombre, 20, startY);
+        doc.text(rut, 20, startY + 10);
+
+        // Línea para firma
+        const firmaY = startY + 25;
+        doc.line(20, firmaY, 80, firmaY); // Línea horizontal
+        doc.text("_____________________", 20, firmaY + 5);
+        doc.text("Firma", 20, firmaY + 15);
+
+        // Guardar el PDF
+        doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
+        closeModal();
     }
-
-    // Evento click para confirmar selección
-    confirmSelectionButton.addEventListener('click', () => {
-      if (selectedDays.length > 0) openModal();
-    });
 
     // Mostrar página de login al cargar
     showPage(loginPage);
-  </script>
+</script>
+
 </body>
 </html>
