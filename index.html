@@ -502,63 +502,70 @@
       modal.style.display = 'none';
     }
 
-    async function generatePDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+async function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-      const nombre = document.getElementById('nombre-display').textContent;
-      const rut = document.getElementById('rut-display').textContent;
-      const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
+    // Datos del usuario
+    const nombre = "Ruth Pérez";
+    const rut = "12.345.678-9";
 
-      const diasOrdenados = [...selectedDays].sort((a, b) => a - b);
-      const mesActual = new Date(currentDate).toLocaleString("es-ES", { month: "long" });
-      const añoActual = currentDate.getFullYear();
-      const fechaInicio = `${diasOrdenados[0]} de ${mesActual} de ${añoActual}`;
-      const fechaFin = `${diasOrdenados[diasOrdenados.length - 1]} de ${mesActual} de ${añoActual}`;
-      const fechaHoy = new Date().toLocaleDateString("es-CL");
+    // Tipo de permiso seleccionado
+    const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
 
-      // Título centrado
-      doc.setFontSize(14);
-      doc.setFont(undefined, "bold");
-      doc.text(`Solicitud de ${tipoPermiso}`, doc.internal.pageSize.getWidth() / 2, 30, { align: "center" });
+    // Fechas seleccionadas
+    const diasOrdenados = [...selectedDays].sort((a, b) => a - b);
+    const mesActual = new Date(currentDate).toLocaleString("es-ES", { month: "long" });
+    const añoActual = currentDate.getFullYear();
+    const fechaInicio = `${diasOrdenados[0]} de ${mesActual} de ${añoActual}`;
+    const fechaFin = `${diasOrdenados[diasOrdenados.length - 1]} de ${mesActual} de ${añoActual}`;
 
-      // Cuerpo del oficio
-      doc.setFontSize(12);
-      doc.setFont(undefined, "normal");
+    // Fecha actual
+    const fechaHoy = new Date().toLocaleDateString("es-CL");
 
-      const cuerpoOficio = `
+    // Título centrado
+    doc.setFontSize(14);
+    doc.setFont(undefined, "bold");
+    doc.text(`Solicitud de ${tipoPermiso}`, doc.internal.pageSize.getWidth() / 2, 30, { align: "center" });
+
+    // Cuerpo del oficio
+    doc.setFontSize(12);
+    doc.setFont(undefined, "normal");
+
+    const cuerpoOficio = `
 Se solicita tener a bien aprobar mi día de ${tipoPermiso.toLowerCase()} correspondiente al periodo comprendido entre el ${fechaInicio} y el ${fechaFin}.
             
 Desde ya muchas gracias.`;
 
-      const lines = doc.splitTextToSize(cuerpoOficio, 170);
-      let startY = 40;
+    const lines = doc.splitTextToSize(cuerpoOficio, 170);
+    let startY = 40;
 
-      lines.forEach(line => {
+    lines.forEach(line => {
         doc.text(line, 20, startY);
         startY += 10;
-      });
+    });
 
-      // Fecha derecha
-      startY += 20;
-      doc.text(`La Serena, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
+    // Fecha (lado derecho)
+    startY += 20;
+    doc.text(`La Serena, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
 
-      // Saludo final
-      startY += 10;
-      doc.text("Atentamente,", 20, startY);
+    // Saludo final
+    startY += 10;
+    doc.text("Atentamente,", 20, startY);
 
-      // Línea de firma
-      const firmaY = startY + 10;
-      doc.line(20, firmaY, 80, firmaY);
-      doc.text("_____________________", 20, firmaY + 5);
+    // Línea de firma (izquierda)
+    const firmaY = startY + 10;
+    doc.line(20, firmaY, 80, firmaY); // Línea horizontal
+    doc.text("_____________________", 20, firmaY + 5); // Texto opcional
 
-      // Nombre y RUT alineados a la derecha
-      const textoFinal = `${nombre}\n${rut}`;
-      doc.text(textoFinal, 100, firmaY + 5, { lineHeightFactor: 1 });
+    // Nombre y RUT alineados a la derecha, debajo de la línea
+    const textoFinal = `${nombre}\n${rut}`;
+    doc.text(textoFinal, doc.internal.pageSize.getWidth() - 20, firmaY + 5, { align: "right" });
 
-      doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
-      closeModal();
-    }
+    // Guardar el PDF
+    doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
+    closeModal();
+}
 
     // Edición de perfil
     const editProfileButton = document.getElementById('edit-profile-button');
