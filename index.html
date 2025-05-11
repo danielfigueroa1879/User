@@ -18,7 +18,6 @@
       justify-content: center;
       align-items: center;
     }
-
     .cloud-background {
       position: fixed;
       top: 0;
@@ -29,12 +28,10 @@
       animation: moveClouds 60s linear infinite;
       z-index: -2;
     }
-
     @keyframes moveClouds {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-
     .cloud-background::before,
     .cloud-background::after {
       content: '';
@@ -47,17 +44,14 @@
       background-size: cover;
       opacity: 0.6;
     }
-
     .cloud-background::after {
       left: 100%;
       animation: moveCloudsLayer2 60s linear infinite;
     }
-
     @keyframes moveCloudsLayer2 {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-
     .page-container {
       max-width: 600px;
       width: 90%;
@@ -75,21 +69,17 @@
       display: none;
       box-sizing: border-box;
     }
-
     .page-container:hover {
       transform: translateY(-5px);
     }
-
     .form-group {
       margin-bottom: 15px;
     }
-
     .form-group label {
       display: block;
       margin-bottom: 5px;
       color: #555;
     }
-
     .form-group input {
       width: 100%;
       padding: 10px;
@@ -102,11 +92,9 @@
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
     }
-
     .form-group input::placeholder {
       color: rgba(51, 51, 51, 0.7);
     }
-
     button {
       background-color: rgba(100, 149, 237, 0.7);
       color: white;
@@ -123,19 +111,16 @@
       width: 100%;
       margin-top: 20px;
     }
-
     button:hover {
       background-color: rgba(70, 130, 180, 0.8);
       transform: scale(1.02) translateY(-2px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-
     #profile-page h2 {
       text-align: center;
       color: #333;
       margin-bottom: 20px;
     }
-
     .profile-info p {
       margin-bottom: 10px;
       color: #555;
@@ -143,11 +128,9 @@
       background-color: rgba(255, 255, 255, 0.3);
       border-radius: 5px;
     }
-
     .profile-info strong {
       color: #333;
     }
-
     #calendar-page .calendar-header {
       display: flex;
       justify-content: space-between;
@@ -155,18 +138,15 @@
       margin-bottom: 20px;
       padding: 0 10px;
     }
-
     #calendar-page .calendar-header h2 {
       margin: 0;
       font-size: 1.5em;
       color: #333;
     }
-
     #calendar-page .calendar-header .nav-buttons {
       display: flex;
       gap: 10px;
     }
-
     #calendar-page .back-button {
       background-color: rgba(150, 150, 150, 0.7);
       margin-top: 20px;
@@ -175,24 +155,20 @@
       margin-left: auto;
       margin-right: auto;
     }
-
     #calendar-page .back-button:hover {
       background-color: rgba(120, 120, 120, 0.8);
     }
-
     #calendar-page .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 5px;
       text-align: center;
     }
-
     #calendar-page .day-name {
       font-weight: bold;
       color: #555;
       padding: 10px 0;
     }
-
     #calendar-page .day {
       padding: 10px 5px;
       border-radius: 8px;
@@ -203,40 +179,33 @@
       overflow: hidden;
       color: #333;
     }
-
     #calendar-page .day:hover {
       background-color: rgba(255, 255, 255, 0.6);
       transform: scale(1.05);
     }
-
     #calendar-page .day.other-month {
       opacity: 0.5;
       pointer-events: none;
     }
-
     #calendar-page .day.today {
       font-weight: bold;
       border: 2px solid rgba(255, 99, 71, 0.7);
     }
-
     #calendar-page .day.selected {
       background-color: rgba(255, 165, 0, 0.7);
       color: white;
       font-weight: bold;
     }
-
     #calendar-page .day.holiday {
       background-color: rgba(255, 69, 0, 0.6);
       color: white;
       font-weight: bold;
     }
-
     #calendar-page .day.leave {
       background-color: rgba(0, 128, 0, 0.6);
       color: white;
       font-weight: bold;
     }
-
     #calendar-page .day .event-indicator {
       position: absolute;
       bottom: 2px;
@@ -245,44 +214,25 @@
       font-size: 0.6em;
       color: rgba(255, 255, 255, 0.8);
     }
-
     #calendar-page .day.holiday .event-indicator {
-      content: 'Feriado';
       color: rgba(255, 255, 255, 0.9);
     }
-
-    #calendar-page .day.leave.admin .event-indicator {
-      content: 'Adm.';
-    }
-
-    #calendar-page .day.leave.sick .event-indicator {
-      content: 'Enf.';
-    }
-
-    #calendar-page .day.leave.marriage .event-indicator {
-      content: 'Mat.';
-    }
-
     @media (max-width: 768px) {
       .page-container {
         padding: 20px;
       }
-
       #calendar-page .calendar-header h2 {
         font-size: 1.2em;
       }
-
       #calendar-page .calendar-header button {
         padding: 6px 10px;
         font-size: 0.9em;
       }
-
       #calendar-page .day {
         padding: 8px 3px;
         font-size: 0.9em;
       }
     }
-
     /* Estilo para el modal */
     .modal {
       display: none;
@@ -296,7 +246,6 @@
       align-items: center;
       z-index: 9999;
     }
-
     .modal-content {
       background: white;
       padding: 20px;
@@ -306,11 +255,9 @@
       text-align: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
-
     .modal-content h3 {
       margin-bottom: 10px;
     }
-
     .modal-content select,
     .modal-content button {
       margin-top: 10px;
@@ -361,6 +308,8 @@
       <h2 id="currentMonthYear"></h2>
     </div>
     <div class="calendar-grid"></div>
+    <!-- Botón nuevo: Confirmar Selección -->
+    <button id="confirm-selection" class="back-button" style="display: none;">Confirmar Selección</button>
     <button id="back-to-profile-button" class="back-button">Volver al Perfil</button>
   </div>
 
@@ -397,6 +346,7 @@
     const currentMonthYear = document.getElementById('currentMonthYear');
     const prevMonthButton = document.getElementById('prevMonth');
     const nextMonthButton = document.getElementById('nextMonth');
+    const confirmSelectionButton = document.getElementById('confirm-selection'); // Nuevo botón
 
     const modal = document.getElementById('request-modal');
     const selectedDaysCount = document.getElementById('selected-days-count');
@@ -517,6 +467,8 @@
 
     function updateSelectedDays() {
       selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
+      confirmSelectionButton.style.display = selectedDays.length > 0 ? 'block' : 'none';
+
       if (selectedDays.length > 0) openModal();
     }
 
@@ -547,6 +499,12 @@
       closeModal();
     }
 
+    // Evento click para confirmar selección
+    confirmSelectionButton.addEventListener('click', () => {
+      if (selectedDays.length > 0) openModal();
+    });
+
+    // Mostrar página de login al cargar
     showPage(loginPage);
   </script>
 </body>
