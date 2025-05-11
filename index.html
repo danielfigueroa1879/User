@@ -15,7 +15,172 @@
             <button type="submit">Entrar</button>
         </form>
     </div>
+<script>
+    const loginPage = document.getElementById('login-page');
+    const profilePage = document.getElementById('profile-page');
+    const calendarPage = document.getElementById('calendar-page');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginButton = document.getElementById('login-button');
+    const managePermissionsButton = document.getElementById('manage-permissions-button');
+    const backToProfileButton = document.getElementById('back-to-profile-button');
 
+    // Variables para el efecto de paralaje
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
+
+    // Función para inicializar el efecto de movimiento en un contenedor
+    function initParallax(container) {
+        if (!container) return;
+
+        container.style.transform = 'translate(0px, 0px)';
+        container.style.transition = 'none'; // Sin transición inicial
+
+        function animate() {
+            targetX += (mouseX - targetX) * 0.05;
+            targetY += (mouseY - targetY) * 0.05;
+            container.style.transform = `translate(${targetX}px, ${targetY}px)`;
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener("mousemove", (e) => {
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            mouseX = (e.clientX - centerX) * 0.05;
+            mouseY = (e.clientY - centerY) * 0.05;
+        });
+
+        animate();
+    }
+
+    // Mostrar página y aplicar paralaje
+    function showPage(pageElement) {
+        loginPage.style.display = 'none';
+        profilePage.style.display = 'none';
+        calendarPage.style.display = 'none';
+        pageElement.style.display = 'block';
+
+        // Aplicar paralaje al contenedor actual
+        initParallax(pageElement);
+
+        // Si mostramos el calendario, renderizarlo
+        if (pageElement === calendarPage) {
+            renderCalendar(currentDate);
+        }
+    }
+
+    // Datos del calendario
+    const currentDate = new Date();
+    const chileanHolidays = [
+        { month: 0, day: 1, name: "Año Nuevo" },
+        { month: 3, day: 18, name: "Viernes Santo" },
+        { month: 3, day: 19, name: "Sábado Santo" },
+        { month: 4, day: 1, name: "Día del Trabajador" },
+        { month: 4, day: 21, name: "Día de las Glorias Navales" },
+        { month: 5, day: 26, name: "San Pedro y San Pablo" },
+        { month: 6, day: 16, name: "Virgen del Carmen" },
+        { month: 7, day: 15, name: "Asunción de la Virgen" },
+        { month: 8, day: 18, name: "Independencia Nacional" },
+        { month: 8, day: 19, name: "Día de las Glorias del Ejército" },
+        { month: 9, day: 31, name: "Día Nacional de las Iglesias Evangélicas y Protestantes" },
+        { month: 10, day: 1, name: "Día de Todos los Santos" },
+        { month: 11, day: 8, name: "Inmaculada Concepción" },
+        { month: 11, day: 25, name: "Navidad" }
+    ];
+
+    const simulatedLeaveDays = [
+        { year: 2025, month: 4, day: 10, type: 'admin' },
+        { year: 2025, month: 4, day: 11, type: 'admin' },
+        { year: 2025, month: 5, day: 5, type: 'sick' },
+        { year: 2025, month: 9, day: 20, type: 'marriage' },
+    ];
+
+    // Login simulado
+    loginButton.addEventListener('click', () => {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        if (email && password) {
+            showPage(profilePage);
+        } else {
+            alert('Por favor, ingresa tu correo y contraseña.');
+        }
+    });
+
+    // Ir al calendario
+    managePermissionsButton.addEventListener('click', () => {
+        showPage(calendarPage);
+    });
+
+    // Volver al perfil
+    backToProfileButton.addEventListener('click', () => {
+        showPage(profilePage);
+    });
+
+    // Renderizar calendario
+    function renderCalendar(date) {
+        const calendarGrid = document.querySelector('#calendar-page .calendar-grid');
+        calendarGrid.innerHTML = '';
+        const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        dayNames.forEach(name => {
+            const div = document.createElement('div');
+            div.classList.add('day-name');
+            div.textContent = name;
+            calendarGrid.appendChild(div);
+        });
+
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const currentMonthYear = document.getElementById('currentMonthYear');
+        currentMonthYear.textContent = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(date);
+
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        const numDaysInMonth = lastDayOfMonth.getDate();
+
+        let firstDayOfWeek = firstDayOfMonth.getDay();
+        firstDayOfWeek = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+
+        const prevMonthLastDay = new Date(year, month, 0).getDate();
+        for (let i = firstDayOfWeek; i > 0; i--) {
+            const div = document.createElement('div');
+            div.classList.add('day', 'other-month');
+            div.textContent = prevMonthLastDay - i + 1;
+            calendarGrid.appendChild(div);
+        }
+
+        for (let i = 1; i <= numDaysInMonth; i++) {
+            const div = document.createElement('div');
+            div.classList.add('day');
+            div.textContent = i;
+            const currentDay = new Date(year, month, i);
+
+            if (currentDay.toDateString() === new Date().toDateString()) {
+                div.classList.add('today');
+            }
+
+            const isHoliday = chileanHolidays.some(holiday =>
+                holiday.month === month && holiday.day === i
+            );
+            if (isHoliday) {
+                div.classList.add('holiday');
+                const indicator = document.createElement('span');
+                indicator.classList.add('event-indicator');
+                indicator.textContent = 'Feriado';
+                div.appendChild(indicator);
+            }
+
+            const leaveDay = simulatedLeaveDays.find(leave =>
+                leave.year === year && leave.month === month && leave.day === i
+            );
+            if (leaveDay) {
+                div.classList.add('leave', leaveDay.type);
+                const indicator = document.createElement('span');
+                indicator.classList.add('event-indicator');
+                if (leaveDay.type === 'admin') indicator.textContent = 'Adm.';
+                if (leaveDay.type === 'sick') indicator.textContent = 'Enf.';
+                if (leaveDay.type === 'marriage') indicator.textContent = 'Mat.';
+                div
     <script src="login.js"></script>
 </body>
 </html>
