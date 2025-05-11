@@ -35,6 +35,29 @@
       100% { transform: translateX(-50%); }
     }
 
+    .cloud-background::before,
+    .cloud-background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://placehold.co/1200x800/c0d0e0/c0d0e0?text= ');
+      background-size: cover;
+      opacity: 0.6;
+    }
+
+    .cloud-background::after {
+      left: 100%;
+      animation: moveCloudsLayer2 60s linear infinite;
+    }
+
+    @keyframes moveCloudsLayer2 {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
     .page-container {
       max-width: 600px;
       width: 90%;
@@ -125,40 +148,6 @@
       color: #333;
     }
 
-    .profile-photo {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .profile-photo img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-    }
-
-    .edit-profile-form {
-      display: none;
-      margin-top: 20px;
-    }
-
-    .edit-profile-form input[type="text"],
-    .edit-profile-form input[type="email"] {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    .edit-profile-form label {
-      display: block;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    .edit-profile-form input[type="file"] {
-      margin-top: 10px;
-    }
-
     #calendar-page .calendar-header {
       display: flex;
       justify-content: space-between;
@@ -171,6 +160,24 @@
       margin: 0;
       font-size: 1.5em;
       color: #333;
+    }
+
+    #calendar-page .calendar-header .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    #calendar-page .back-button {
+      background-color: rgba(150, 150, 150, 0.7);
+      margin-top: 20px;
+      width: auto;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #calendar-page .back-button:hover {
+      background-color: rgba(120, 120, 120, 0.8);
     }
 
     #calendar-page .calendar-grid {
@@ -202,19 +209,80 @@
       transform: scale(1.05);
     }
 
-    #calendar-page .back-button {
-      background-color: rgba(150, 150, 150, 0.7);
-      margin-top: 20px;
-      width: auto;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+    #calendar-page .day.other-month {
+      opacity: 0.5;
+      pointer-events: none;
     }
 
-    #calendar-page .back-button:hover {
-      background-color: rgba(120, 120, 120, 0.8);
+    #calendar-page .day.today {
+      font-weight: bold;
+      border: 2px solid rgba(255, 99, 71, 0.7);
     }
 
+    #calendar-page .day.selected {
+      background-color: rgba(255, 165, 0, 0.7);
+      color: white;
+      font-weight: bold;
+    }
+
+    #calendar-page .day.holiday {
+      background-color: rgba(255, 69, 0, 0.6);
+      color: white;
+      font-weight: bold;
+    }
+
+    #calendar-page .day.leave {
+      background-color: rgba(0, 128, 0, 0.6);
+      color: white;
+      font-weight: bold;
+    }
+
+    #calendar-page .day .event-indicator {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6em;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    #calendar-page .day.holiday .event-indicator {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    #calendar-page .day.leave.admin .event-indicator {
+      content: 'Adm.';
+    }
+
+    #calendar-page .day.leave.sick .event-indicator {
+      content: 'Enf.';
+    }
+
+    #calendar-page .day.leave.marriage .event-indicator {
+      content: 'Mat.';
+    }
+
+    @media (max-width: 768px) {
+      .page-container {
+        padding: 20px;
+      }
+
+      #calendar-page .calendar-header h2 {
+        font-size: 1.2em;
+      }
+
+      #calendar-page .calendar-header button {
+        padding: 6px 10px;
+        font-size: 0.9em;
+      }
+
+      #calendar-page .day {
+        padding: 8px 3px;
+        font-size: 0.9em;
+      }
+    }
+
+    /* Estilo para el modal */
     .modal {
       display: none;
       position: fixed;
@@ -249,114 +317,152 @@
       width: 100%;
       font-size: 1em;
     }
+
+    .profile-photo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-photo img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .edit-profile-form {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .edit-profile-form input[type="text"],
+    .edit-profile-form input[type="email"] {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .edit-profile-form label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .edit-profile-form input[type="file"] {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Fondo animado -->
-  <div class="cloud-background"></div>
+<!-- Fondo animado -->
+<div class="cloud-background"></div>
 
-  <!-- Contenedores -->
-  <div id="login-page" class="page-container">
-    <h2>Iniciar Sesión</h2>
+<!-- Contenedores -->
+<div id="login-page" class="page-container">
+  <h2>Iniciar Sesión</h2>
+  <div class="form-group">
+    <label for="email">Correo Electrónico:</label>
+    <input type="email" id="email" placeholder="Ingresa tu correo" />
+  </div>
+  <div class="form-group">
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" placeholder="Ingresa tu contraseña" />
+  </div>
+  <button id="login-button">Entrar</button>
+</div>
+
+<div id="profile-page" class="page-container">
+  <div class="profile-photo">
+    <img id="profile-pic" src="https://placehold.co/100x100/cccccc/999999?text=Foto+Perfil " alt="Foto de perfil">
+  </div>
+  <h2>Mi Perfil</h2>
+  <div class="profile-info">
+    <p><strong>Nombre Completo:</strong> <span id="nombre-display">Ruth Pérez</span></p>
+    <p><strong>RUT:</strong> <span id="rut-display">12.345.678-9</span></p>
+    <p><strong>Dirección:</strong> <span id="direccion-display">Calle Falsa 123, La Serena</span></p>
+    <p><strong>Teléfono:</strong> <span id="telefono-display">+56 9 1234 5678</span></p>
+    <p><strong>Correo:</strong> <span id="correo-display">ruth.perez@example.com</span></p>
+  </div>
+  <button id="edit-profile-button">Editar Perfil</button>
+  <button id="manage-permissions-button">Gestionar Permisos y Feriados</button>
+  <button onclick="showPage(loginPage)" style="margin-top: 10px;">⬅️ Atrás</button>
+
+  <!-- Formulario de edición de perfil -->
+  <div id="edit-profile-form" class="edit-profile-form">
+    <h3>Editar Datos</h3>
     <div class="form-group">
-      <label for="email">Correo Electrónico:</label>
-      <input type="email" id="email" placeholder="Ingresa tu correo">
+      <label for="nombre-input">Nombre:</label>
+      <input type="text" id="nombre-input" placeholder="Tu nombre completo">
     </div>
     <div class="form-group">
-      <label for="password">Contraseña:</label>
-      <input type="password" id="password" placeholder="Ingresa tu contraseña">
+      <label for="rut-input">RUT:</label>
+      <input type="text" id="rut-input" placeholder="Ej: 12.345.678-9">
     </div>
-    <button id="login-button">Entrar</button>
+    <div class="form-group">
+      <label for="direccion-input">Dirección:</label>
+      <input type="text" id="direccion-input" placeholder="Tu dirección">
+    </div>
+    <div class="form-group">
+      <label for="telefono-input">Teléfono:</label>
+      <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
+    </div>
+    <div class="form-group">
+      <label for="correo-input">Correo:</label>
+      <input type="email" id="correo-input" placeholder="tu@email.com">
+    </div>
+    <div class="form-group">
+      <label for="foto-input">Subir Foto:</label>
+      <input type="file" id="foto-input" accept="image/*">
+    </div>
+    <button onclick="saveProfile()">Guardar Cambios</button>
+    <button onclick="hideEditForm()">Cancelar</button>
   </div>
+</div>
 
-  <div id="profile-page" class="page-container">
-    <div class="profile-photo">
-      <img id="profile-pic" src="https://placehold.co/100x100/cccccc/999999?text=Foto+Perfil " alt="Foto de perfil">
+<div id="calendar-page" class="page-container">
+  <div class="calendar-header">
+    <div class="nav-buttons">
+      <button id="prevMonth">Anterior</button>
+      <button id="nextMonth">Siguiente</button>
     </div>
-    <h2>Mi Perfil</h2>
-    <div class="profile-info">
-      <p><strong>Nombre Completo:</strong> <span id="nombre-display">Ruth Pérez</span></p>
-      <p><strong>RUT:</strong> <span id="rut-display">12.345.678-9</span></p>
-      <p><strong>Dirección:</strong> <span id="direccion-display">Calle Falsa 123, La Serena</span></p>
-      <p><strong>Teléfono:</strong> <span id="telefono-display">+56 9 1234 5678</span></p>
-      <p><strong>Correo:</strong> <span id="correo-display">ruth.perez@example.com</span></p>
-    </div>
-    <button id="edit-profile-button">Editar Perfil</button>
-    <button id="manage-permissions-button">Gestionar Permisos y Feriados</button>
-    <button onclick="showPage(loginPage)" style="margin-top: 10px;">⬅️ Atrás</button>
-
-    <!-- Formulario de edición de perfil -->
-    <div id="edit-profile-form" class="edit-profile-form">
-      <h3>Editar Datos</h3>
-      <div class="form-group">
-        <label for="nombre-input">Nombre:</label>
-        <input type="text" id="nombre-input" placeholder="Tu nombre completo">
-      </div>
-      <div class="form-group">
-        <label for="rut-input">RUT:</label>
-        <input type="text" id="rut-input" placeholder="Ej: 12.345.678-9">
-      </div>
-      <div class="form-group">
-        <label for="direccion-input">Dirección:</label>
-        <input type="text" id="direccion-input" placeholder="Tu dirección">
-      </div>
-      <div class="form-group">
-        <label for="telefono-input">Teléfono:</label>
-        <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
-      </div>
-      <div class="form-group">
-        <label for="correo-input">Correo:</label>
-        <input type="email" id="correo-input" placeholder="tu@email.com">
-      </div>
-      <div class="form-group">
-        <label for="foto-input">Subir Foto:</label>
-        <input type="file" id="foto-input" accept="image/*">
-      </div>
-      <button onclick="saveProfile()">Guardar Cambios</button>
-      <button onclick="hideEditForm()">Cancelar</button>
-    </div>
+    <h2 id="currentMonthYear"></h2>
   </div>
+  <div class="calendar-grid"></div>
+  <button id="confirm-selection" class="back-button" style="display: none;">Confirmar Selección</button>
+  <button id="back-to-profile-button" class="back-button">Volver al Perfil</button>
+</div>
 
-  <div id="calendar-page" class="page-container">
-    <div class="calendar-header">
-      <div class="nav-buttons">
-        <button id="prevMonth">Anterior</button>
-        <button id="nextMonth">Siguiente</button>
-      </div>
-      <h2 id="currentMonthYear"></h2>
-    </div>
-    <div class="calendar-grid"></div>
-    <button id="back-to-profile-button" class="back-button">Volver al Perfil</button>
+<!-- Modal para solicitar permiso -->
+<div class="modal" id="request-modal">
+  <div class="modal-content">
+    <h3>Seleccionaste <span id="selected-days-count">0</span> día(s)</h3>
+    <select id="leave-type">
+      <option value="Administrativo">Permiso Administrativo</option>
+      <option value="Enfermedad">Licencia Médica</option>
+      <option value="Matrimonio">Permiso por Matrimonio</option>
+      <option value="Feriado">Feriado</option>
+    </select>
+    <button onclick="generatePDF()">Descargar PDF</button>
+    <button onclick="closeModal()">Cerrar</button>
   </div>
+</div>
 
-  <!-- Modal para solicitar permiso -->
-  <div class="modal" id="request-modal">
-    <div class="modal-content">
-      <h3>Seleccionaste <span id="selected-days-count">0</span> día(s)</h3>
-      <select id="leave-type">
-        <option value="admin">Permiso Administrativo</option>
-        <option value="sick">Licencia Médica</option>
-        <option value="marriage">Permiso por Matrimonio</option>
-        <option value="holiday">Feriado</option>
-      </select>
-      <button onclick="generatePDF()">Descargar PDF</button>
-      <button onclick="closeModal()">Cerrar</button>
-    </div>
-  </div>
+<!-- jsPDF CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
 
-  <!-- jsPDF CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
-
-  <script>
+<!-- Script principal -->
+<script>
     const loginPage = document.getElementById('login-page');
     const profilePage = document.getElementById('profile-page');
     const calendarPage = document.getElementById('calendar-page');
+
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const loginButton = document.getElementById('login-button');
     const managePermissionsButton = document.getElementById('manage-permissions-button');
     const backToProfileButton = document.getElementById('back-to-profile-button');
+    const confirmSelectionButton = document.getElementById('confirm-selection');
 
     const calendarGrid = document.querySelector('#calendar-page .calendar-grid');
     const currentMonthYear = document.getElementById('currentMonthYear');
@@ -366,335 +472,313 @@
     const selectedDaysCount = document.getElementById('selected-days-count');
     const leaveTypeSelect = document.getElementById('leave-type');
 
-    let currentDate = new Date();
+    let currentDate = new nombreCompleto();
     let selectedDays = [];
 
     const chileanHolidays = [
-        { month: 0, day: 1, name: "Año Nuevo" },
-        { month: 3, day: 18, name: "Viernes Santo" },
-        { month: 3, day: 19, name: "Sábado Santo" },
-        { month: 4, day: 1, name: "Día del Trabajador" },
-        { month: 4, day: 21, name: "Día de las Glorias Navales" },
-        { month: 5, day: 26, name: "San Pedro y San Pablo" },
-        { month: 6, day: 16, name: "Virgen del Carmen" },
-        { month: 7, day: 15, name: "Asunción de la Virgen" },
-        { month: 8, day: 18, name: "Independencia Nacional" },
-        { month: 8, day: 19, name: "Día de las Glorias del Ejército" },
-        { month: 9, day: 31, name: "Día Nacional de las Iglesias Evangélicas y Protestantes" },
-        { month: 10, day: 1, name: "Día de Todos los Santos" },
-        { month: 11, day: 8, name: "Inmaculada Concepción" },
-        { month: 11, day: 25, name: "Navidad" }
+      { month: 0, day: 1, name: "Año Nuevo" },
+      { month: 3, day: 18, name: "Viernes Santo" },
+      { month: 3, day: 19, name: "Sábado Santo" },
+      { month: 4, day: 1, name: "Día del Trabajador" },
+      { month: 4, day: 21, name: "Día de las Glorias Navales" },
+      { month: 5, day: 26, name: "San Pedro y San Pablo" },
+      { month: 6, day: 16, name: "Virgen del Carmen" },
+      { month: 7, day: 15, name: "Asunción de la Virgen" },
+      { month: 8, day: 18, name: "Independencia Nacional" },
+      { month: 8, day: 19, name: "Día de las Glorias del Ejército" },
+      { month: 9, day: 31, name: "Día Nacional de las Iglesias Evangélicas y Protestantes" },
+      { month: 10, day: 1, name: "Día de Todos los Santos" },
+      { month: 11, day: 8, name: "Inmaculada Concepción" },
+      { month: 11, day: 25, name: "Navidad" }
     ];
 
     function showPage(pageElement) {
-        [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
-        pageElement.style.display = 'block';
-        if (pageElement === calendarPage) renderCalendar(currentDate);
+      [loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
+      pageElement.style.display = 'block';
+      if (pageElement === calendarPage) renderCalendar(currentDate);
     }
 
     loginButton.addEventListener('click', () => {
-        const email = emailInput.value;
-        const password = passwordInput.value;
-        if (email && password) {
-            localStorage.setItem('loggedIn', 'true');
-            showPage(profilePage);
-        } else {
-            alert('Por favor, ingresa tu correo y contraseña.');
-        }
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      if (email && password) {
+        localStorage.setItem('loggedIn', 'true');
+        showPage(profilePage);
+      } else {
+        alert('Por favor, ingresa tu correo y contraseña.');
+      }
     });
 
     managePermissionsButton.addEventListener('click', () => showPage(calendarPage));
     backToProfileButton.addEventListener('click', () => showPage(profilePage));
 
     prevMonthButton.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar(currentDate);
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar(currentDate);
     });
 
     nextMonthButton.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar(currentDate);
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar(currentDate);
     });
 
     function renderCalendar(date) {
-        calendarGrid.innerHTML = '';
-        const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-        dayNames.forEach(name => {
-            const div = document.createElement('div');
-            div.classList.add('day-name');
-            div.textContent = name;
-            calendarGrid.appendChild(div);
+      calendarGrid.innerHTML = '';
+      const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+      dayNames.forEach(name => {
+        const div = document.createElement('div');
+        div.classList.add('day-name');
+        div.textContent = name;
+        calendarGrid.appendChild(div);
+      });
+
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      currentMonthYear.textContent = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(date);
+
+      const firstDayOfMonth = new Date(year, month, 1);
+      const lastDayOfMonth = new Date(year, month + 1, 0);
+      const numDaysInMonth = lastDayOfMonth.getDate();
+
+      let firstDayOfWeek = firstDayOfMonth.getDay();
+      firstDayOfWeek = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+
+      const prevMonthLastDay = new Date(year, month, 0).getDate();
+      for (let i = firstDayOfWeek; i > 0; i--) {
+        const div = document.createElement('div');
+        div.classList.add('day', 'other-month');
+        div.textContent = prevMonthLastDay - i + 1;
+        calendarGrid.appendChild(div);
+      }
+
+      for (let i = 1; i <= numDaysInMonth; i++) {
+        const div = document.createElement('div');
+        div.classList.add('day');
+        div.textContent = i;
+        const currentDay = new Date(year, month, i);
+        if (currentDay.toDateString() === new Date().toDateString()) {
+          div.classList.add('today');
+        }
+
+        const isHoliday = chileanHolidays.some(holiday =>
+          holiday.month === month && holiday.day === i
+        );
+        if (isHoliday) {
+          div.classList.add('holiday');
+          const indicator = document.createElement('span');
+          indicator.classList.add('event-indicator');
+          indicator.textContent = 'Feriado';
+          div.appendChild(indicator);
+        }
+
+        div.addEventListener('click', () => {
+          div.classList.toggle('selected');
+          updateSelectedDays();
         });
 
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        currentMonthYear.textContent = new Intl.DateTimeFormat('es-CL', { month: 'long', year: 'numeric' }).format(date);
+        calendarGrid.appendChild(div);
+      }
 
-        const firstDayOfMonth = new Date(year, month, 1);
-        const lastDayOfMonth = new Date(year, month + 1, 0);
-        const numDaysInMonth = lastDayOfMonth.getDate();
-
-        let firstDayOfWeek = firstDayOfMonth.getDay();
-        firstDayOfWeek = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
-
-        const prevMonthLastDay = new Date(year, month, 0).getDate();
-        for (let i = firstDayOfWeek; i > 0; i--) {
-            const div = document.createElement('div');
-            div.classList.add('day', 'other-month');
-            div.textContent = prevMonthLastDay - i + 1;
-            calendarGrid.appendChild(div);
+      const totalDaysDisplayed = firstDayOfWeek + numDaysInMonth;
+      const remainingDays = 42 - totalDaysDisplayed;
+      for (let i = 1; i <= remainingDays; i++) {
+        if (totalDaysDisplayed + i > 35 && totalDaysDisplayed + i <= 42) {
+          const div = document.createElement('div');
+          div.classList.add('day', 'other-month');
+          div.textContent = i;
+          calendarGrid.appendChild(div);
         }
-
-        for (let i = 1; i <= numDaysInMonth; i++) {
-            const div = document.createElement('div');
-            div.classList.add('day');
-            div.textContent = i;
-            const currentDay = new Date(year, month, i);
-            if (currentDay.toDateString() === new Date().toDateString()) div.classList.add('today');
-
-            const isHoliday = chileanHolidays.some(holiday =>
-                holiday.month === month && holiday.day === i
-            );
-            if (isHoliday) {
-                div.classList.add('holiday');
-                const indicator = document.createElement('span');
-                indicator.classList.add('event-indicator');
-                indicator.textContent = 'Feriado';
-                div.appendChild(indicator);
-            }
-
-            div.addEventListener('click', () => {
-                div.classList.toggle('selected');
-                updateSelectedDays();
-            });
-
-            calendarGrid.appendChild(div);
-        }
-
-        const totalDaysDisplayed = firstDayOfWeek + numDaysInMonth;
-        const remainingDays = 42 - totalDaysDisplayed;
-        for (let i = 1; i <= remainingDays; i++) {
-            if (totalDaysDisplayed + i > 35 && totalDaysDisplayed + i <= 42) {
-                const div = document.createElement('div');
-                div.classList.add('day', 'other-month');
-                div.textContent = i;
-                calendarGrid.appendChild(div);
-            }
-        }
+      }
     }
 
     function updateSelectedDays() {
-        selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
-        if (selectedDays.length > 0) openModal();
+      selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
+      confirmSelectionButton.style.display = selectedDays.length > 0 ? 'block' : 'none';
+      if (selectedDays.length > 0) openModal();
     }
 
     function openModal() {
-        selectedDaysCount.textContent = selectedDays.length;
-        modal.style.display = 'flex';
+      selectedDaysCount.textContent = selectedDays.length;
+      modal.style.display = 'flex';
     }
 
     function closeModal() {
-        modal.style.display = 'none';
+      modal.style.display = 'none';
     }
 
     async function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
-        // Cargar datos del usuario desde localStorage o valores por defecto
-        const nombre = localStorage.getItem('userName') || "Ruth Pérez";
-        const rut = localStorage.getItem('userRut') || "12.345.678-9";
+      // Datos del usuario
+      const nombre = document.getElementById('nombre-display').textContent;
+      const rut = document.getElementById('rut-display').textContent;
+      const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
 
-        const diasOrdenados = [...selectedDays].sort((a, b) => a - b);
-        const mesActual = new Date(currentDate).toLocaleString("es-ES", { month: "long" });
-        const añoActual = currentDate.getFullYear();
+      // Fechas seleccionadas
+      const diasOrdenados = [...selectedDays].sort((a, b) => a - b);
+      const mesActual = new Date(currentDate).toLocaleString("es-ES", { month: "long" });
+      const añoActual = currentDate.getFullYear();
+      const fechaInicio = `${diasOrdenados[0]} de ${mesActual} de ${añoActual}`;
+      const fechaFin = `${diasOrdenados[diasOrdenados.length - 1]} de ${mesActual} de ${añoActual}`;
+      const fechaHoy = new Date().toLocaleDateString("es-CL");
 
-        const fechaInicio = `${diasOrdenados[0]} de ${mesActual} de ${añoActual}`;
-        const fechaFin = `${diasOrdenados[diasOrdenados.length - 1]} de ${mesActual} de ${añoActual}`;
-        const fechaHoy = new Date().toLocaleDateString("es-CL");
-        const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
+      // Título centrado
+      doc.setFontSize(14);
+      doc.setFont(undefined, "bold");
+      doc.text(`Solicitud de ${tipoPermiso}`, doc.internal.pageSize.getWidth() / 2, 30, { align: "center" });
 
-        // Título centrado
-        doc.setFontSize(14);
-        doc.setFont(undefined, "bold");
-        doc.text(`Solicitud de ${tipoPermiso}`, doc.internal.pageSize.getWidth() / 2, 30, { align: "center" });
+      // Cuerpo del oficio
+      doc.setFontSize(12);
+      doc.setFont(undefined, "normal");
 
-        // Cuerpo del oficio
-        doc.setFontSize(12);
-        doc.setFont(undefined, "normal");
-
-        const cuerpoOficio = `
+      const cuerpoOficio = `
 Se solicita tener a bien aprobar mi día de ${tipoPermiso.toLowerCase()} correspondiente al periodo comprendido entre el ${fechaInicio} y el ${fechaFin}.
             
 Desde ya muchas gracias.`;
 
-        const lines = doc.splitTextToSize(cuerpoOficio, 170);
-        let startY = 40;
+      const lines = doc.splitTextToSize(cuerpoOficio, 170);
+      let startY = 40;
 
-        lines.forEach(line => {
-            doc.text(line, 20, startY);
-            startY += 10;
-        });
-
-        // Fecha (lado derecho)
-        startY += 20;
-        doc.text(`La Serena, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
-
-        // Saludo final
+      lines.forEach(line => {
+        doc.text(line, 20, startY);
         startY += 10;
-        doc.text("Atentamente,", 20, startY);
+      });
 
-        // Línea de firma
-        const firmaY = startY + 10;
-        const startX = 20;
-        const endX = 80;
-        doc.line(startX, firmaY, endX, firmaY); // Línea horizontal
+      // Fecha (lado derecho)
+      startY += 20;
+      doc.text(`La Serena, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
 
-        // Nombre y RUT alineados a la derecha, debajo de la firma
-        const textoFinal = `${nombre}\n${rut}`;
-        doc.text(textoFinal, doc.internal.pageSize.getWidth() - 20, firmaY + 5, { align: "right" });
+      // Saludo final
+      startY += 10;
+      doc.text("Atentamente,", 20, startY);
 
-        // Guardar PDF
-        doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
-        closeModal();
+      // Línea de firma
+      const firmaY = startY + 10;
+      const startX = 20;
+      const endX = 80;
+      doc.line(startX, firmaY, endX, firmaY);
+      doc.text("_____________________", 20, firmaY + 5);
+
+      // Nombre y RUT alineados a la derecha
+      const textoFinal = `${nombre}\n${rut}`;
+      doc.text(textoFinal, endX + 10, firmaY + 5, {
+        align: "right",
+        lineHeightFactor: 1
+      });
+
+      // Guardar el PDF
+      doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
+      closeModal();
     }
 
-    // Funciones para editar y guardar datos del perfil
+    // Funciones de edición de perfil
     const editProfileButton = document.getElementById('edit-profile-button');
     const editProfileForm = document.getElementById('edit-profile-form');
     const profileDataElements = {
-        nombre: document.getElementById('nombre-display'),
-        rut: document.getElementById('rut-display'),
-        direccion: document.getElementById('direccion-display'),
-        telefono: document.getElementById('telefono-display'),
-        correo: document.getElementById('correo-display'),
-        profilePic: document.getElementById('profile-pic')
+      nombre: document.getElementById('nombre-display'),
+      rut: document.getElementById('rut-display'),
+      direccion: document.getElementById('direccion-display'),
+      telefono: document.getElementById('telefono-display'),
+      correo: document.getElementById('correo-display'),
+      profilePic: document.getElementById('profile-pic')
     };
 
     const inputFields = {
-        nombre: document.getElementById('nombre-input'),
-        rut: document.getElementById('rut-input'),
-        direccion: document.getElementById('direccion-input'),
-        telefono: document.getElementById('telefono-input'),
-        correo: document.getElementById('correo-input'),
-        foto: document.getElementById('foto-input')
+      nombre: document.getElementById('nombre-input'),
+      rut: document.getElementById('rut-input'),
+      direccion: document.getElementById('direccion-input'),
+      telefono: document.getElementById('telefono-input'),
+      correo: document.getElementById('correo-input'),
+      foto: document.getElementById('foto-input')
     };
 
     editProfileButton.addEventListener('click', () => {
-        editProfileForm.style.display = 'block';
+      editProfileForm.style.display = 'block';
 
-        inputFields.nombre.value = profileDataElements.nombre.textContent;
-        inputFields.rut.value = profileDataElements.rut.textContent;
-        inputFields.direccion.value = profileDataElements.direccion.textContent;
-        inputFields.telefono.value = profileDataElements.telefono.textContent;
-        inputFields.correo.value = profileDataElements.correo.textContent;
+      inputFields.nombre.value = profileDataElements.nombre.textContent;
+      inputFields.rut.value = profileDataElements.rut.textContent;
+      inputFields.direccion.value = profileDataElements.direccion.textContent;
+      inputFields.telefono.value = profileDataElements.telefono.textContent;
+      inputFields.correo.value = profileDataElements.correo.textContent;
     });
 
     function hideEditForm() {
-        editProfileForm.style.display = 'none';
+      editProfileForm.style.display = 'none';
     }
 
     function saveProfile() {
-        const nuevoNombre = inputFields.nombre.value.trim();
-        const nuevoRut = inputFields.rut.value.trim();
-        const nuevaDireccion = inputFields.direccion.value.trim();
-        const nuevoTelefono = inputFields.telefono.value.trim();
-        const nuevoCorreo = inputFields.correo.value.trim();
-        const fotoInput = inputFields.foto.files[0];
+      const nuevoNombre = inputFields.nombre.value.trim();
+      const nuevoRut = inputFields.rut.value.trim();
+      const nuevaDireccion = inputFields.direccion.value.trim();
+      const nuevoTelefono = inputFields.telefono.value.trim();
+      const nuevoCorreo = inputFields.correo.value.trim();
+      const fotoInput = inputFields.foto.files[0];
 
-        if (nuevoNombre) {
-            profileDataElements.nombre.textContent = nuevoNombre;
-            localStorage.setItem('userName', nuevoNombre);
-        }
-        if (nuevoRut) {
-            profileDataElements.rut.textContent = nuevoRut;
-            localStorage.setItem('userRut', nuevoRut);
-        }
-        if (nuevaDireccion) {
-            profileDataElements.direccion.textContent = nuevaDireccion;
-            localStorage.setItem('userDireccion', nuevaDireccion);
-        }
-        if (nuevoTelefono) {
-            profileDataElements.telefono.textContent = nuevoTelefono;
-            localStorage.setItem('userTelefono', nuevoTelefono);
-        }
-        if (nuevoCorreo) {
-            profileDataElements.correo.textContent = nuevoCorreo;
-            localStorage.setItem('userCorreo', nuevoCorreo);
-        }
+      if (nuevoNombre) profileDataElements.nombre.textContent = nuevoNombre;
+      if (nuevoRut) profileDataElements.rut.textContent = nuevoRut;
+      if (nuevaDireccion) profileDataElements.direccion.textContent = nuevaDireccion;
+      if (nuevoTelefono) profileDataElements.telefono.textContent = nuevoTelefono;
+      if (nuevoCorreo) profileDataElements.correo.textContent = nuevoCorreo;
 
-        if (fotoInput) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                profileDataElements.profilePic.src = e.target.result;
-                localStorage.setItem('profilePhoto', e.target.result);
-            };
-            reader.readAsDataURL(fotoInput);
-        }
+      if (fotoInput) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          profileDataElements.profilePic.src = e.target.result;
+          localStorage.setItem('profilePhoto', e.target.result);
+        };
+        reader.readAsDataURL(fotoInput);
+      }
 
-        hideEditForm();
+      localStorage.setItem('userName', nuevoNombre || '');
+      localStorage.setItem('userRut', nuevoRut || '');
+      localStorage.setItem('userDireccion', nuevaDireccion || '');
+      localStorage.setItem('userTelefono', nuevoTelefono || '');
+      localStorage.setItem('userCorreo', nuevoCorreo || '');
+
+      hideEditForm();
     }
 
-    // Cargar datos guardados al iniciar
-    window.onload = () => {
-        const savedName = localStorage.getItem('userName');
-        const savedRut = localStorage.getItem('userRut');
-        const savedDireccion = localStorage.getItem('userDireccion');
-        const savedTelefono = localStorage.getItem('userTelefono');
-        const savedCorreo = localStorage.getItem('userCorreo');
-        const savedPhoto = localStorage.getItem('profilePhoto');
+    function updateSelectedDays() {
+      selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(d => parseInt(d.textContent));
+      confirmSelectionButton.style.display = selectedDays.length > 0 ? 'block' : 'none';
+      if (selectedDays.length > 0) openModal();
+    }
 
-        if (savedName) profileDataElements.nombre.textContent = savedName;
-        if (savedRut) profileDataElements.rut.textContent = savedRut;
-        if (savedDireccion) profileDataElements.direccion.textContent = savedDireccion;
-        if (savedTelefono) profileDataElements.telefono.textContent = savedTelefono;
-        if (savedCorreo) profileDataElements.correo.textContent = savedCorreo;
-        if (savedPhoto) profileDataElements.profilePic.src = savedPhoto;
+    function openModal() {
+      selectedDaysCount.textContent = selectedDays.length;
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    // Carga inicial desde localStorage
+    window.onload = () => {
+      const savedName = localStorage.getItem('userName');
+      const savedRut = localStorage.getItem('userRut');
+      const savedDireccion = localStorage.getItem('userDireccion');
+      const savedTelefono = localStorage.getItem('userTelefono');
+      const savedCorreo = localStorage.getItem('userCorreo');
+      const savedPhoto = localStorage.getItem('profilePhoto');
+
+      if (savedName) profileDataElements.nombre.textContent = savedName;
+      if (savedRut) profileDataElements.rut.textContent = savedRut;
+      if (savedDireccion) profileDataElements.direccion.textContent = savedDireccion;
+      if (savedTelefono) profileDataElements.telefono.textContent = savedTelefono;
+      if (savedCorreo) profileDataElements.correo.textContent = savedCorreo;
+      if (savedPhoto) profileDataElements.profilePic.src = savedPhoto;
+
+      showPage(loginPage);
     };
+
+    confirmSelectionButton.addEventListener('click', () => {
+      if (selectedDays.length > 0) openModal();
+    });
 
     // Mostrar página de login al cargar
     showPage(loginPage);
 </script>
-  <div class="profile-photo">
-  <img id="profile-pic" src="https://placehold.co/100x100/cccccc/999999?text=Foto+Perfil " alt="Foto de perfil">
-</div>
-<p><strong>Nombre Completo:</strong> <span id="nombre-display">Ruth Pérez</span></p>
-<p><strong>RUT:</strong> <span id="rut-display">12.345.678-9</span></p>
-<p><strong>Dirección:</strong> <span id="direccion-display">Calle Falsa 123, Santiago</span></p>
-<p><strong>Teléfono:</strong> <span id="telefono-display">+56 9 1234 5678</span></p>
-<p><strong>Correo:</strong> <span id="correo-display">ruth.perez@example.com</span></p>
-
-<button id="edit-profile-button">Editar Perfil</button>
-
-<!-- Formulario de edición de perfil -->
-<div id="edit-profile-form" style="display: none; margin-top: 20px;">
-  <h3>Editar Datos</h3>
-  <div class="form-group">
-    <label for="nombre-input">Nombre:</label>
-    <input type="text" id="nombre-input" placeholder="Tu nombre completo">
-  </div>
-  <div class="form-group">
-    <label for="rut-input">RUT:</label>
-    <input type="text" id="rut-input" placeholder="Ej: 12.345.678-9">
-  </div>
-  <div class="form-group">
-    <label for="direccion-input">Dirección:</label>
-    <input type="text" id="direccion-input" placeholder="Tu dirección">
-  </div>
-  <div class="form-group">
-    <label for="telefono-input">Teléfono:</label>
-    <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
-  </div>
-  <div class="form-group">
-    <label for="correo-input">Correo:</label>
-    <input type="email" id="correo-input" placeholder="tu@email.com">
-  </div>
-  <div class="form-group">
-    <label for="foto-input">Subir Foto:</label>
-    <input type="file" id="foto-input" accept="image/*">
-  </div>
-  <button onclick="saveProfile()">Guardar Cambios</button>
-  <button onclick="hideEditForm()">Cancelar</button>
-</div>
 </body>
 </html>
