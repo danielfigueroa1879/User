@@ -1,0 +1,126 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.cloud-background {
+    background: linear-gradient(to top, #74ebd5 0%, #ACB6E5 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animación de nubes */
+.cloud {
+    position: absolute;
+    top: 10%;
+    width: 300px;
+    height: 120px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: moveClouds 60s linear infinite;
+}
+
+.cloud:before,
+.cloud:after {
+    content: '';
+    position: absolute;
+    background: #fff;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    top: -60px;
+    left: 50px;
+}
+
+.cloud:after {
+    width: 120px;
+    height: 120px;
+    top: -30px;
+    left: 100px;
+}
+
+@keyframes moveClouds {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+}
+
+/* Crear varias nubes con diferentes posiciones */
+.cloud:nth-child(1) { top: 10%; animation-duration: 80s; }
+.cloud:nth-child(2) { top: 30%; animation-duration: 100s; }
+.cloud:nth-child(3) { top: 50%; animation-duration: 70s; }
+.cloud:nth-child(4) { top: 70%; animation-duration: 90s; }
+
+/* Estilo del contenedor de login */
+.login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 15px;
+    width: 300px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffffffcc;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-container button:hover {
+    background-color: #fff;
+}
+
+/* Estilo del perfil */
+.profile-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 15px;
+    width: 400px;
+    text-align: left;
+    color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.profile-info p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
