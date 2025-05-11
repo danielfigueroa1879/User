@@ -1,233 +1,112 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+import React, { useState, useRef, useEffect } from "react";
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 100vh;
-    overflow: hidden;
-}
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
-.cloud-background {
-    background: linear-gradient(to top, #74ebd5 0%, #ACB6E5 100%);
-    position: relative;
-    overflow: hidden;
-}
+  const containerRef = useRef(null);
+  const mouseMoveRef = useRef({ x: 0, y: 0 });
 
-/* Animación de nubes */
-.cloud {
-    position: absolute;
-    top: 10%;
-    width: 300px;
-    height: 120px;
-    background: #fff;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: moveClouds 60s linear infinite;
-}
+  // Datos simulados del usuario
+  const mockUser = {
+    nombre: "Juan Pérez",
+    rut: "12.345.678-9",
+    direccion: "Calle Falsa 123",
+    telefono: "+56 9 1234 5678",
+    correo: "juan.perez@example.com",
+  };
 
-.cloud:before,
-.cloud:after {
-    content: '';
-    position: absolute;
-    background: #fff;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    top: -60px;
-    left: 50px;
-}
+  // Manejador de inicio de sesión
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setUser(mockUser);
+    setIsLoggedIn(true);
+  };
 
-.cloud:after {
-    width: 120px;
-    height: 120px;
-    top: -30px;
-    left: 100px;
-}
+  // Captura el movimiento del mouse
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const x = e.clientX / window.innerWidth - 0.5;
+      const y = e.clientY / window.innerHeight - 0.5;
+      mouseMoveRef.current = { x, y };
+    };
 
-@keyframes moveClouds {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(100%); }
-}
+    window.addEventListener("mousemove", handleMouseMove);
 
-/* Crear varias nubes con diferentes posiciones */
-.cloud:nth-child(1) { top: 10%; animation-duration: 80s; }
-.cloud:nth-child(2) { top: 30%; animation-duration: 100s; }
-.cloud:nth-child(3) { top: 50%; animation-duration: 70s; }
-.cloud:nth-child(4) { top: 70%; animation-duration: 90s; }
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
 
-/* Estilo del contenedor de login */
-.login-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: 15px;
-    width: 300px;
-    text-align: center;
-    color: white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
+  // Animación suave del contenedor
+  useEffect(() => {
+    if (!containerRef.current) return;
 
-.login-container h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-}
+    let animationFrameId;
 
-.login-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-}
+    const animate = () => {
+      const { x, y } = mouseMoveRef.current;
+      const container = containerRef.current;
 
-.login-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #ffffffcc;
-    color: #333;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
+      const currentTransform = getComputedStyle(container).transform || "none";
+      const matrix = currentTransform !== "none" ? new DOMMatrix(currentTransform) : new DOMMatrix();
 
-.login-container button:hover {
-    background-color: #fff;
-}
+      const newX = matrix.m41 + (x * 40 - matrix.m41) * 0.05;
+      const newY = matrix.m42 + (y * 40 - matrix.m42) * 0.05;
 
-/* Estilo del perfil */
-.profile-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: 15px;
-    width: 400px;
-    text-align: left;
-    color: white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
+      container.style.transform = `translate(${newX}px, ${newY}px)`;
+      animationFrameId = requestAnimationFrame(animate);
+    };
 
-.profile-info p {
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+    animate();
 
-.cloud-background {
-  background: linear-gradient(to top, #74ebd5 0%, #ACB6E5 100%);
-  position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-}
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
 
-.cloud {
-  position: absolute;
-  top: 10%;
-  width: 200px;
-  height: 80px;
-  background: #fff;
-  border-radius: 50%;
-  opacity: 0.5;
-  animation: moveClouds linear infinite;
-}
+  return (
+    <div className="cloud-background min-h-screen flex items-center justify-center p-4">
+      {/* Nubes animadas */}
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className={`cloud`} style={{ animationDuration: `${30 + i * 10}s`, top: `${10 + i * 15}%`, left: `${i * 20}%` }}></div>
+      ))}
 
-.cloud:before,
-.cloud:after {
-  content: '';
-  position: absolute;
-  background: #fff;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  top: -40px;
-  left: 50px;
-}
+      {/* Contenedor que se mueve con el mouse */}
+      <div ref={containerRef} className="transition-transform duration-100 ease-out">
+        {!isLoggedIn ? (
+          <form onSubmit={handleLogin} className="glass-container max-w-md w-full p-8 rounded-xl text-center space-y-6 shadow-lg">
+            <h2 className="text-white text-2xl font-semibold">Iniciar Sesión</h2>
+            <input
+              type="email"
+              placeholder="Correo electrónico"
+              required
+              className="w-full px-4 py-3 rounded-md border-none focus:outline-none text-gray-800 placeholder-gray-500"
+            />
+            <input
+              type="password"
+              placeholder="Contraseña"
+              required
+              className="w-full px-4 py-3 rounded-md border-none focus:outline-none text-gray-800 placeholder-gray-500"
+            />
+            <button
+              type="submit"
+              className="w-full bg-white text-gray-800 font-medium py-3 rounded-md hover:bg-opacity-90 transition duration-300"
+            >
+              Entrar
+            </button>
+          </form>
+        ) : (
+          <div className="glass-container max-w-md w-full p-8 rounded-xl text-left shadow-lg">
+            <h2 className="text-white text-2xl font-semibold mb-4">Perfil del Usuario</h2>
+            <p className="text-white mb-2"><strong>Nombre:</strong> {user.nombre}</p>
+            <p className="text-white mb-2"><strong>RUT:</strong> {user.rut}</p>
+            <p className="text-white mb-2"><strong>Dirección:</strong> {user.direccion}</p>
+            <p className="text-white mb-2"><strong>Teléfono:</strong> {user.telefono}</p>
+            <p className="text-white mb-4"><strong>Correo:</strong> {user.correo}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-.cloud:after {
-  width: 80px;
-  height: 80px;
-  top: -20px;
-  left: 100px;
-}
-
-@keyframes moveClouds {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(100%); }
-}
-
-.glass-container {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.cloud-background {
-  background: linear-gradient(to top, #74ebd5 0%, #ACB6E5 100%);
-  position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-}
-
-.cloud {
-  position: absolute;
-  width: 200px;
-  height: 80px;
-  background: #fff;
-  border-radius: 50%;
-  opacity: 0.5;
-  animation: moveClouds linear infinite;
-}
-
-.cloud:before,
-.cloud:after {
-  content: '';
-  position: absolute;
-  background: #fff;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  top: -40px;
-  left: 50px;
-}
-
-.cloud:after {
-  width: 80px;
-  height: 80px;
-  top: -20px;
-  left: 100px;
-}
-
-@keyframes moveClouds {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(100%); }
-}
-
-.glass-container {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
+export default App;
