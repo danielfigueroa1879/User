@@ -65,3 +65,7 @@
         { month: 4, day: 1, name: "Día del Trabajador" },
         { month: 4, day: 21, name: "Día de las Glorias Navales" },
         { month: 5,
+/* Efecto de paralaje: movimiento suave del contenedor */
+.page-container {
+    transition: transform 0.1s ease;
+}
