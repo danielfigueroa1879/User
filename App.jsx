@@ -23,7 +23,7 @@ const App = () => {
     setIsLoggedIn(true);
   };
 
-  // Efecto para seguir el movimiento del mouse
+  // Captura el movimiento del mouse
   useEffect(() => {
     const handleMouseMove = (e) => {
       const x = e.clientX / window.innerWidth - 0.5;
@@ -38,7 +38,7 @@ const App = () => {
     };
   }, []);
 
-  // Animación del contenedor usando requestAnimationFrame
+  // Animación suave del contenedor
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -48,7 +48,6 @@ const App = () => {
       const { x, y } = mouseMoveRef.current;
       const container = containerRef.current;
 
-      // Movimiento suave con interpolación simple
       const currentTransform = getComputedStyle(container).transform || "none";
       const matrix = currentTransform !== "none" ? new DOMMatrix(currentTransform) : new DOMMatrix();
 
@@ -66,7 +65,7 @@ const App = () => {
 
   return (
     <div className="cloud-background min-h-screen flex items-center justify-center p-4">
-      {/* Nubes */}
+      {/* Nubes animadas */}
       {[...Array(5)].map((_, i) => (
         <div key={i} className={`cloud`} style={{ animationDuration: `${30 + i * 10}s`, top: `${10 + i * 15}%`, left: `${i * 20}%` }}></div>
       ))}
