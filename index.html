@@ -655,5 +655,46 @@ Desde ya muchas gracias.`;
     // Mostrar página de login al cargar
     showPage(loginPage);
 </script>
+  <div class="profile-photo">
+  <img id="profile-pic" src="https://placehold.co/100x100/cccccc/999999?text=Foto+Perfil " alt="Foto de perfil">
+</div>
+<p><strong>Nombre Completo:</strong> <span id="nombre-display">Ruth Pérez</span></p>
+<p><strong>RUT:</strong> <span id="rut-display">12.345.678-9</span></p>
+<p><strong>Dirección:</strong> <span id="direccion-display">Calle Falsa 123, Santiago</span></p>
+<p><strong>Teléfono:</strong> <span id="telefono-display">+56 9 1234 5678</span></p>
+<p><strong>Correo:</strong> <span id="correo-display">ruth.perez@example.com</span></p>
+
+<button id="edit-profile-button">Editar Perfil</button>
+
+<!-- Formulario de edición de perfil -->
+<div id="edit-profile-form" style="display: none; margin-top: 20px;">
+  <h3>Editar Datos</h3>
+  <div class="form-group">
+    <label for="nombre-input">Nombre:</label>
+    <input type="text" id="nombre-input" placeholder="Tu nombre completo">
+  </div>
+  <div class="form-group">
+    <label for="rut-input">RUT:</label>
+    <input type="text" id="rut-input" placeholder="Ej: 12.345.678-9">
+  </div>
+  <div class="form-group">
+    <label for="direccion-input">Dirección:</label>
+    <input type="text" id="direccion-input" placeholder="Tu dirección">
+  </div>
+  <div class="form-group">
+    <label for="telefono-input">Teléfono:</label>
+    <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
+  </div>
+  <div class="form-group">
+    <label for="correo-input">Correo:</label>
+    <input type="email" id="correo-input" placeholder="tu@email.com">
+  </div>
+  <div class="form-group">
+    <label for="foto-input">Subir Foto:</label>
+    <input type="file" id="foto-input" accept="image/*">
+  </div>
+  <button onclick="saveProfile()">Guardar Cambios</button>
+  <button onclick="hideEditForm()">Cancelar</button>
+</div>
 </body>
 </html>
