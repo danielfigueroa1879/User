@@ -505,11 +505,11 @@ async function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    // Datos del usuario (puedes usar localStorage si ya los guardaste)
+    // Datos del usuario
     const nombre = "Ruth Pérez";
     const rut = "12.345.678-9";
 
-    // Tipo de permiso seleccionado en el modal
+    // Tipo de permiso seleccionado
     const tipoPermiso = leaveTypeSelect.options[leaveTypeSelect.selectedIndex].text;
 
     // Fechas seleccionadas
@@ -542,7 +542,7 @@ Desde ya muchas gracias.`;
         startY += 10;
     });
 
-    // Fecha (alineada a la derecha)
+    // Fecha (derecha)
     startY += 20;
     doc.text(`La Serena, ${fechaHoy}`, doc.internal.pageSize.getWidth() - 20, startY, { align: "right" });
 
@@ -550,19 +550,27 @@ Desde ya muchas gracias.`;
     startY += 10;
     doc.text("Atentamente,", 20, startY);
 
-    // Línea de firma → ahora alineada a la derecha y más pequeña
-    const firmaY = startY + 10;
-    const startX = doc.internal.pageSize.getWidth() - 160; // Izquierda de la línea
-    const endX = doc.internal.pageSize.getWidth() - 20;     // Derecha de la línea
+    // Posición para firma → lado derecho
+    const textX = doc.internal.pageSize.getWidth() - 20;
+    const textY = startY + 10;
 
-    doc.line(startX, firmaY, endX, firmaY); // Dibujar línea horizontal
-    doc.text("_____________________", startX, firmaY + 5); // Texto opcional para reforzar la firma
+    // Estilo de fuente para nombre y RUT
+    doc.setFontSize(12);
+    doc.setFont(undefined, "normal");
 
-    // Nombre y RUT alineados a la derecha, justo debajo de la línea
+    // Dibujar línea de firma → con el mismo ancho que el texto
+    const textWidth = doc.getTextWidth(nombre); // Ancho del nombre
+    const lineStartX = textX - textWidth; // Ajustamos la posición X de la línea
+    const lineY = textY + 5;
+
+    doc.line(lineStartX, lineY, textX, lineY); // Línea de firma → alineada a la derecha
+    doc.text("_____________________", lineStartX, lineY + 5); // Texto opcional
+
+    // Nombre y RUT alineados a la derecha
     const textoFinal = `${nombre}\n${rut}`;
-    doc.text(textoFinal, endX, firmaY + 5, { align: "right" });
+    doc.text(textoFinal, textX, lineY + 5, { align: "right" });
 
-    // Guardar PDF
+    // Guardar el PDF
     doc.save(`solicitud_${tipoPermiso.toLowerCase().replace(/\s+/g, '_')}.pdf`);
     closeModal();
 }
