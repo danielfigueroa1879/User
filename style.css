@@ -1,112 +1,67 @@
-import React, { useState, useRef, useEffect } from "react";
+<script>
+    const loginPage = document.getElementById('login-page');
+    const profilePage = document.getElementById('profile-page');
+    const calendarPage = document.getElementById('calendar-page');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginButton = document.getElementById('login-button');
+    const managePermissionsButton = document.getElementById('manage-permissions-button');
+    const backToProfileButton = document.getElementById('back-to-profile-button');
 
-const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+    // Variables para el movimiento del contenedor
+    const containerRef = loginPage; // Se puede cambiar dinámicamente si es necesario
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
 
-  const containerRef = useRef(null);
-  const mouseMoveRef = useRef({ x: 0, y: 0 });
+    // Inicializar movimiento paralaje
+    function initParallax(container) {
+        if (!container) return;
 
-  // Datos simulados del usuario
-  const mockUser = {
-    nombre: "Juan Pérez",
-    rut: "12.345.678-9",
-    direccion: "Calle Falsa 123",
-    telefono: "+56 9 1234 5678",
-    correo: "juan.perez@example.com",
-  };
+        container.style.transform = 'translate(0px, 0px)';
+        container.style.transition = 'none'; // Desactiva transición inicial
 
-  // Manejador de inicio de sesión
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setUser(mockUser);
-    setIsLoggedIn(true);
-  };
+        function animate() {
+            targetX += (mouseX - targetX) * 0.05;
+            targetY += (mouseY - targetY) * 0.05;
+            container.style.transform = `translate(${targetX}px, ${targetY}px)`;
+            requestAnimationFrame(animate);
+        }
 
-  // Captura el movimiento del mouse
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const x = e.clientX / window.innerWidth - 0.5;
-      const y = e.clientY / window.innerHeight - 0.5;
-      mouseMoveRef.current = { x, y };
-    };
+        window.addEventListener("mousemove", (e) => {
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            mouseX = (e.clientX - centerX) * 0.05;
+            mouseY = (e.clientY - centerY) * 0.05;
+        });
 
-    window.addEventListener("mousemove", handleMouseMove);
+        animate();
+    }
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+    // Mostrar página con efecto paralaje
+    function showPage(pageElement) {
+        loginPage.style.display = 'none';
+        profilePage.style.display = 'none';
+        calendarPage.style.display = 'none';
+        pageElement.style.display = 'block';
 
-  // Animación suave del contenedor
-  useEffect(() => {
-    if (!containerRef.current) return;
+        // Reiniciar posición del contenedor
+        if (pageElement === loginPage) initParallax(loginPage);
+        else if (pageElement === profilePage) initParallax(profilePage);
+        else if (pageElement === calendarPage) initParallax(calendarPage);
 
-    let animationFrameId;
+        // Si mostramos el calendario, renderizarlo
+        if (pageElement === calendarPage) {
+            renderCalendar(currentDate);
+        }
+    }
 
-    const animate = () => {
-      const { x, y } = mouseMoveRef.current;
-      const container = containerRef.current;
-
-      const currentTransform = getComputedStyle(container).transform || "none";
-      const matrix = currentTransform !== "none" ? new DOMMatrix(currentTransform) : new DOMMatrix();
-
-      const newX = matrix.m41 + (x * 40 - matrix.m41) * 0.05;
-      const newY = matrix.m42 + (y * 40 - matrix.m42) * 0.05;
-
-      container.style.transform = `translate(${newX}px, ${newY}px)`;
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
-
-  return (
-    <div className="cloud-background min-h-screen flex items-center justify-center p-4">
-      {/* Nubes animadas */}
-      {[...Array(5)].map((_, i) => (
-        <div key={i} className={`cloud`} style={{ animationDuration: `${30 + i * 10}s`, top: `${10 + i * 15}%`, left: `${i * 20}%` }}></div>
-      ))}
-
-      {/* Contenedor que se mueve con el mouse */}
-      <div ref={containerRef} className="transition-transform duration-100 ease-out">
-        {!isLoggedIn ? (
-          <form onSubmit={handleLogin} className="glass-container max-w-md w-full p-8 rounded-xl text-center space-y-6 shadow-lg">
-            <h2 className="text-white text-2xl font-semibold">Iniciar Sesión</h2>
-            <input
-              type="email"
-              placeholder="Correo electrónico"
-              required
-              className="w-full px-4 py-3 rounded-md border-none focus:outline-none text-gray-800 placeholder-gray-500"
-            />
-            <input
-              type="password"
-              placeholder="Contraseña"
-              required
-              className="w-full px-4 py-3 rounded-md border-none focus:outline-none text-gray-800 placeholder-gray-500"
-            />
-            <button
-              type="submit"
-              className="w-full bg-white text-gray-800 font-medium py-3 rounded-md hover:bg-opacity-90 transition duration-300"
-            >
-              Entrar
-            </button>
-          </form>
-        ) : (
-          <div className="glass-container max-w-md w-full p-8 rounded-xl text-left shadow-lg">
-            <h2 className="text-white text-2xl font-semibold mb-4">Perfil del Usuario</h2>
-            <p className="text-white mb-2"><strong>Nombre:</strong> {user.nombre}</p>
-            <p className="text-white mb-2"><strong>RUT:</strong> {user.rut}</p>
-            <p className="text-white mb-2"><strong>Dirección:</strong> {user.direccion}</p>
-            <p className="text-white mb-2"><strong>Teléfono:</strong> {user.telefono}</p>
-            <p className="text-white mb-4"><strong>Correo:</strong> {user.correo}</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default App;
+    // Datos del calendario
+    const currentDate = new Date();
+    const chileanHolidays = [
+        { month: 0, day: 1, name: "Año Nuevo" },
+        { month: 3, day: 18, name: "Viernes Santo" },
+        { month: 3, day: 19, name: "Sábado Santo" },
+        { month: 4, day: 1, name: "Día del Trabajador" },
+        { month: 4, day: 21, name: "Día de las Glorias Navales" },
+        { month: 5,
