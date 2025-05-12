@@ -6,96 +6,56 @@
   <title>Portal de Usuario</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
   <style>
-    html, body {
+    body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       background-color: #e0e0e0;
-      height: 100%;
-      overflow-y: auto; /* Permitir desplazamiento vertical */
-    }
-    
-    body {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 50px 0;
+      overflow-y: auto;
+      position: relative;
     }
 
-    .cloud-background {
+    /* Nuevo método para el fondo animado */
+    #clouds-background {
       position: fixed;
       top: 0;
       left: 0;
-      width: 200%;
+      width: 100%;
       height: 100%;
-      background: linear-gradient(to bottom, #a0c0e0, #c0d0e0);
-      animation: moveClouds 60s linear infinite;
-      z-index: -2;
+      z-index: -10;
+      overflow: hidden;
     }
 
-    @keyframes moveClouds {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    .cloud-background::before,
-    .cloud-background::after {
-      content: '';
+    .clouds-gradient {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://raw.githubusercontent.com/danielfigueroa1879/User/40c376aa2e2f949b71a93eaa2636ca4ebc4768f9/nubes.jpg ');
-      background-size: cover;
-      opacity: 0.4;
-    }
-
-    .cloud-background::after {
-      left: 100%;
-      animation: moveCloudsLayer2 60s linear infinite;
-    }
-
-    @keyframes moveCloudsLayer2 {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    .cloud-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 200%;
-      height: 100%;
       background: linear-gradient(to bottom, #a0c0e0, #c0d0e0);
-      animation: moveClouds 60s linear infinite;
-      z-index: -2;
+      z-index: -9;
     }
 
-    @keyframes moveClouds {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    .cloud-background::before,
-    .cloud-background::after {
-      content: '';
+    .clouds-image {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
+      width: 200%;
       height: 100%;
       background-image: url('https://raw.githubusercontent.com/danielfigueroa1879/User/40c376aa2e2f949b71a93eaa2636ca4ebc4768f9/nubes.jpg');
       background-size: cover;
+      background-repeat: repeat-x;
       opacity: 0.4;
+      animation: animateClouds 60s linear infinite;
+      z-index: -8;
     }
 
-    .cloud-background::after {
-      left: 100%;
-      animation: moveCloudsLayer2 60s linear infinite;
-    }
-
-    @keyframes moveCloudsLayer2 {
+    @keyframes animateClouds {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
@@ -103,7 +63,7 @@
     .page-container {
       max-width: 600px;
       width: 90%;
-      margin: 0 auto;
+      margin: 0 auto 20px auto;
       background-color: rgba(255, 255, 255, 0.2);
       border-radius: 15px;
       padding: 30px;
@@ -308,7 +268,6 @@
     .edit-profile-form {
       display: none;
       margin-top: 20px;
-      transition: all 0.5s ease-in-out;
     }
 
     .edit-profile-form input[type="text"],
@@ -344,7 +303,6 @@
     @media (max-width: 768px) {
       .page-container {
         padding: 20px;
-        margin: 30px auto;
       }
 
       #calendar-page .calendar-header h2 {
@@ -377,8 +335,11 @@
 </head>
 <body>
 
-<!-- Fondo animado -->
-<div class="cloud-background"></div>
+<!-- Fondo animado nuevo método -->
+<div id="clouds-background">
+  <div class="clouds-gradient"></div>
+  <div class="clouds-image"></div>
+</div>
 
 <!-- Contenedores -->
 <div id="login-page" class="page-container">
