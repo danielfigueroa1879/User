@@ -808,7 +808,7 @@
       <label for="telefono-input">Teléfono:</label>
       <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
       <div class="error-message"
-   <div class="error-message" id="telefono-error"></div>
+<div class="error-message" id="telefono-error"></div>
     </div>
     <div class="form-group" id="correo-group">
       <label for="correo-input">Correo:</label>
@@ -2287,21 +2287,26 @@ Desde ya muchas gracias.`;
       }
       
       .welcome-features {
-        grid-template-columns: repeat(2, 140px);
-        grid-template-rows: repeat(2, 110px);
-        column-gap: 40px;  /* Separación horizontal para móviles */
-        row-gap: 30px;     /* Separación vertical para móviles */
+        grid-template-columns: repeat(2, 120px);  /* Cuadros más pequeños */
+        grid-template-rows: repeat(2, 100px);     /* Cuadros más pequeños */
+        column-gap: 30px;  /* Separación horizontal para móviles */
+        row-gap: 25px;     /* Separación vertical para móviles */
         padding: 10px;
-        margin-top: 30px;
-        margin-bottom: 30px;
+        margin-top: 20px;
+        margin-bottom: 20px;
         max-width: 100%;
       }
       
       .feature-item {
-        width: 140px;
-        height: 110px;
-        padding: 12px;
-        font-size: 0.9em;
+        width: 120px;       /* Ancho reducido */
+        height: 100px;      /* Altura reducida */
+        padding: 10px;
+        font-size: 0.85em;  /* Texto más pequeño */
+      }
+      
+      .feature-icon {
+        font-size: 1.8em;   /* Icono más pequeño */
+        margin-bottom: 8px;
       }
 
       #calendar-page .calendar-header h2 {
@@ -2330,9 +2335,33 @@ Desde ya muchas gracias.`;
         font-size: 0.9em;
       }
       
-      #notification-center {
-        width: calc(100% - 40px);
-        right: 20px;
+    @media (max-width: 480px) {
+      /* Ajustes para pantallas muy pequeñas (smartphones) */
+      .welcome-features {
+        grid-template-columns: repeat(2, 100px);  /* Aún más pequeños */
+        grid-template-rows: repeat(2, 90px);
+        column-gap: 20px;
+        row-gap: 20px;
+      }
+      
+      .feature-item {
+        width: 100px;
+        height: 90px;
+        padding: 8px;
+        font-size: 0.8em;
+      }
+      
+      .feature-icon {
+        font-size: 1.6em;
+        margin-bottom: 5px;
+      }
+      
+      .welcome-content h1 {
+        font-size: 2em;
+      }
+      
+      .welcome-subtitle {
+        font-size: 1em;
       }
     }
 
