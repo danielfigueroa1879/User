@@ -640,6 +640,10 @@
   function showPage(pageElement) {
     [welcomePage, loginPage, profilePage, calendarPage].forEach(p => p.style.display = 'none');
     pageElement.style.display = 'block';
+    
+    // Desplazarse al inicio de la página
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     if (pageElement === calendarPage) renderCalendar(currentDate);
   }
 
@@ -921,6 +925,9 @@ Desde ya muchas gracias.`;
     profileElements.correo.textContent = savedCorreo;
     profileElements.profilePic.src = savedPhoto;
 
+    // Asegurar que la página comience en la parte superior
+    window.scrollTo(0, 0);
+    
     // Mostrar página de bienvenida en lugar de login
     showPage(welcomePage);
   };
