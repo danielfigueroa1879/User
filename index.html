@@ -302,15 +302,30 @@
       .page-container {
         padding: 20px;
       }
+
       #calendar-page .calendar-header h2 {
         font-size: 1.2em;
       }
+
       #calendar-page .calendar-header button {
         padding: 6px 10px;
         font-size: 0.9em;
       }
+
       #calendar-page .day {
         padding: 8px 3px;
+        font-size: 0.9em;
+      }
+
+      .profile-info p {
+        font-size: 0.9em;
+      }
+
+      .form-group input {
+        font-size: 0.9em;
+      }
+
+      .modal-content {
         font-size: 0.9em;
       }
     }
@@ -735,11 +750,6 @@ Desde ya muchas gracias.`;
     hideEditForm();
   }
 
-  // Mostrar botón de confirmación y mostrar días seleccionados
-  confirmSelectionButton.addEventListener('click', () => {
-    if (selectedDays.length > 0) openModal();
-  });
-
   // Carga inicial desde localStorage
   window.onload = () => {
     const savedName = localStorage.getItem('userName') || "Ruth Pérez";
@@ -758,6 +768,11 @@ Desde ya muchas gracias.`;
 
     showPage(loginPage);
   };
+
+  // Confirmar selección de días
+  confirmSelectionButton.addEventListener('click', () => {
+    if (selectedDays.length > 0) openModal();
+  });
 </script>
 </body>
 </html>
