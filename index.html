@@ -1849,10 +1849,16 @@ Desde ya muchas gracias.`;
     .welcome-features {
       display: grid;
       grid-template-columns: repeat(2, 160px);
-      grid-template-rows: repeat(2, auto);
-      grid-gap: 20px;
+      grid-template-rows: repeat(2, 120px);
+      column-gap: 80px;   /* Separación horizontal reducida */
+      row-gap: 60px;      /* Separación vertical */
       justify-content: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
+      margin-top: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 20px;
     }
 
     .feature-item {
@@ -2282,7 +2288,13 @@ Desde ya muchas gracias.`;
       
       .welcome-features {
         grid-template-columns: repeat(2, 140px);
-        grid-gap: 15px;
+        grid-template-rows: repeat(2, 110px);
+        column-gap: 40px;  /* Separación horizontal para móviles */
+        row-gap: 30px;     /* Separación vertical para móviles */
+        padding: 10px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        max-width: 100%;
       }
       
       .feature-item {
