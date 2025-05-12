@@ -4,19 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Portal de Usuario</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins :wght@400;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
   <style>
-    body {
+    html, body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       background-color: #e0e0e0;
-      overflow: hidden;
-      position: relative;
-      min-height: 100vh;
+      height: 100%;
+      overflow-y: auto; /* Permitir desplazamiento vertical */
+    }
+    
+    body {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      padding: 50px 0;
     }
 
     .cloud-background {
@@ -58,10 +61,49 @@
       100% { transform: translateX(-50%); }
     }
 
+    .cloud-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(to bottom, #a0c0e0, #c0d0e0);
+      animation: moveClouds 60s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes moveClouds {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .cloud-background::before,
+    .cloud-background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://raw.githubusercontent.com/danielfigueroa1879/User/40c376aa2e2f949b71a93eaa2636ca4ebc4768f9/nubes.jpg');
+      background-size: cover;
+      opacity: 0.4;
+    }
+
+    .cloud-background::after {
+      left: 100%;
+      animation: moveCloudsLayer2 60s linear infinite;
+    }
+
+    @keyframes moveCloudsLayer2 {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
     .page-container {
       max-width: 600px;
       width: 90%;
-      margin: 50px auto;
+      margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.2);
       border-radius: 15px;
       padding: 30px;
@@ -74,8 +116,6 @@
       transition: transform 0.3s ease-in-out;
       display: none;
       box-sizing: border-box;
-      overflow-y: auto; /* Scroll interno sin barra */
-      max-height: 80vh; /* Altura máxima del contenedor */
     }
 
     .page-container:hover {
@@ -268,19 +308,7 @@
     .edit-profile-form {
       display: none;
       margin-top: 20px;
-      padding: 10px;
-      border-radius: 8px;
-      background-color: rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease-in-out;
-    }
-
-    .edit-profile-form::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .edit-profile-form::-webkit-scrollbar-thumb {
-      background-color: rgba(100, 149, 237, 0.5);
-      border-radius: 4px;
+      transition: all 0.5s ease-in-out;
     }
 
     .edit-profile-form input[type="text"],
@@ -316,6 +344,7 @@
     @media (max-width: 768px) {
       .page-container {
         padding: 20px;
+        margin: 30px auto;
       }
 
       #calendar-page .calendar-header h2 {
@@ -332,8 +361,16 @@
         font-size: 0.9em;
       }
 
-      .edit-profile-form {
-        max-height: 300px;
+      .profile-info p {
+        font-size: 0.9em;
+      }
+
+      .form-group input {
+        font-size: 0.9em;
+      }
+
+      .modal-content {
+        font-size: 0.9em;
       }
     }
   </style>
@@ -359,7 +396,7 @@
 
 <div id="profile-page" class="page-container">
   <div class="profile-photo">
-    <img id="profile-pic" src="https://placehold.co/100x100/cccccc/999999?text=Foto+Perfil " alt="Foto de perfil">
+    <img id="profile-pic" src="https://placehold.co/100x100/cccccc/999999?text=Foto+Perfil" alt="Foto de perfil">
   </div>
   <h2>Mi Perfil</h2>
   <div class="profile-info">
@@ -434,7 +471,7 @@
 </div>
 
 <!-- jsPDF CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
   const loginPage = document.getElementById('login-page');
@@ -712,8 +749,10 @@ Desde ya muchas gracias.`;
 
   // Edición de perfil
   editProfileButton.addEventListener('click', () => {
+    // Mostrar el formulario
     editProfileForm.style.display = 'block';
 
+    // Llenar los campos con los valores actuales
     inputFields.nombre.value = profileElements.nombre.textContent;
     inputFields.rut.value = profileElements.rut.textContent;
     inputFields.direccion.value = profileElements.direccion.textContent;
@@ -755,6 +794,9 @@ Desde ya muchas gracias.`;
     localStorage.setItem('userCorreo', nuevoCorreo || '');
 
     hideEditForm();
+    
+    // Desplazarse al inicio de la página
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Carga inicial desde localStorage
@@ -764,7 +806,7 @@ Desde ya muchas gracias.`;
     const savedDireccion = localStorage.getItem('userDireccion') || "Calle Falsa 123, La Serena";
     const savedTelefono = localStorage.getItem('userTelefono') || "+56 9 1234 5678";
     const savedCorreo = localStorage.getItem('userCorreo') || "ruth.perez@example.com";
-    const savedPhoto = localStorage.getItem('profilePhoto') || "https://placehold.co/100x100/cccccc/999999?text=Foto+Perfil ";
+    const savedPhoto = localStorage.getItem('profilePhoto') || "https://placehold.co/100x100/cccccc/999999?text=Foto+Perfil";
 
     profileElements.nombre.textContent = savedName;
     profileElements.rut.textContent = savedRut;
