@@ -43,7 +43,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://www.transparenttextures.com/patterns/clouds.png '); /* Imagen real de nubes */
+      background-image: url('https://raw.githubusercontent.com/danielfigueroa1879/User/40c376aa2e2f949b71a93eaa2636ca4ebc4768f9/nubes.jpg ');
       background-size: cover;
       opacity: 0.4;
     }
@@ -735,6 +735,11 @@ Desde ya muchas gracias.`;
     hideEditForm();
   }
 
+  // Mostrar botón de confirmación y mostrar días seleccionados
+  confirmSelectionButton.addEventListener('click', () => {
+    if (selectedDays.length > 0) openModal();
+  });
+
   // Carga inicial desde localStorage
   window.onload = () => {
     const savedName = localStorage.getItem('userName') || "Ruth Pérez";
@@ -753,11 +758,6 @@ Desde ya muchas gracias.`;
 
     showPage(loginPage);
   };
-
-  // Confirmar selección de días
-  confirmSelectionButton.addEventListener('click', () => {
-    if (selectedDays.length > 0) openModal();
-  });
 </script>
 </body>
 </html>
