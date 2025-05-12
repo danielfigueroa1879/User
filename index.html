@@ -74,6 +74,8 @@
       transition: transform 0.3s ease-in-out;
       display: none;
       box-sizing: border-box;
+      overflow-y: auto; /* Scroll interno sin barra */
+      max-height: 80vh; /* Altura máxima del contenedor */
     }
 
     .page-container:hover {
@@ -266,6 +268,19 @@
     .edit-profile-form {
       display: none;
       margin-top: 20px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .edit-profile-form::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .edit-profile-form::-webkit-scrollbar-thumb {
+      background-color: rgba(100, 149, 237, 0.5);
+      border-radius: 4px;
     }
 
     .edit-profile-form input[type="text"],
@@ -317,16 +332,8 @@
         font-size: 0.9em;
       }
 
-      .profile-info p {
-        font-size: 0.9em;
-      }
-
-      .form-group input {
-        font-size: 0.9em;
-      }
-
-      .modal-content {
-        font-size: 0.9em;
+      .edit-profile-form {
+        max-height: 300px;
       }
     }
   </style>
