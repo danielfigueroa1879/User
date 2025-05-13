@@ -808,6 +808,7 @@
       <label for="telefono-input">Teléfono:</label>
       <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
       <div class="error-message"
+           
  .feature-icon {
       font-size: 2.2em;  /* Ligeramente más grande por defecto */
       margin-bottom: 10px;
@@ -1640,6 +1641,37 @@ Desde ya muchas gracias.`;
       showNotification(randomResponse.title, randomResponse.message, randomResponse.type);
     }, randomTime);
   }
+  
+  // Modificar el DOM para garantizar que la imagen de fondo se cargue
+  window.addEventListener('DOMContentLoaded', function() {
+    // Asegurar que el fondo de nubes se cargue correctamente
+    const cloudsImage = document.querySelector('.clouds-image');
+    if (cloudsImage) {
+      // Forzar recarga de la imagen de fondo
+      const imgUrl = 'https://raw.githubusercontent.com/danielfigueroa1879/User/40c376aa2e2f949b71a93eaa2636ca4ebc4768f9/nubes.jpg';
+      
+      // Crear una imagen temporal para precargar
+      const tempImg = new Image();
+      tempImg.onload = function() {
+        // Cuando se carga, aplicarla al fondo
+        cloudsImage.style.backgroundImage = `url(${imgUrl})`;
+        cloudsImage.style.opacity = '0.45';
+        
+        // Notificar que el fondo se ha cargado
+        console.log('Fondo de nubes cargado correctamente');
+      };
+      
+      tempImg.onerror = function() {
+        // Si hay error, intentar con otra URL conocida
+        cloudsImage.style.backgroundImage = 'url(https://raw.githubusercontent.com/danielfigueroa1879/User/40c376aa2e2f949b71a93eaa2636ca4ebc4768f9/nubes.jpg)';
+        cloudsImage.style.opacity = '0.5';
+        console.log('Usando URL alternativa para el fondo');
+      };
+      
+      // Iniciar la carga
+      tempImg.src = imgUrl;
+    }
+  });
 </script>
 </body>
 </html><!DOCTYPE html>
@@ -2376,6 +2408,7 @@ Desde ya muchas gracias.`;
       
       .page-container {
         background-color: rgba(255, 255, 255, 0.4); /* Más transparente en móviles */
+        padding: 20px;
       }
       
       .dark-mode .page-container {
@@ -2384,7 +2417,18 @@ Desde ya muchas gracias.`;
       
       .welcome-content {
         padding: 10px 0;
-        max-width: 100%;
+        width: 100%;
+        position: relative;
+      }
+      
+      .welcome-features {
+        display: grid;
+        grid-template-columns: repeat(2, 110px);
+        grid-template-rows: repeat(2, 100px);
+        gap: 45px 42px;
+        margin: 25px auto 45px;
+        position: relative;
+        left: -10px; /* Desplazamiento hacia la izquierda */
       }
       
       .feature-icon {
@@ -2588,3 +2632,4 @@ Desde ya muchas gracias.`;
       <label for="telefono-input">Teléfono:</label>
       <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
       <div class="error-message"
+           
