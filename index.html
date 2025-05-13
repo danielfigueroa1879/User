@@ -1776,6 +1776,8 @@ Desde ya muchas gracias.`;
       opacity: 0;
       transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), 
                   opacity 0.5s ease;
+      width: auto;
+      max-width: 100%;
     }
 
     .notification.show {
@@ -2280,7 +2282,7 @@ Desde ya muchas gracias.`;
       box-shadow: 0 2px 4px var(--shadow-color);
     }
 
-    /* Responsive */
+    /* Responsive para tablets */
     @media (max-width: 768px) {
       .page-container {
         padding: 20px;
@@ -2292,7 +2294,7 @@ Desde ya muchas gracias.`;
         column-gap: 55px;  /* Ajustamos la separación horizontal */
         row-gap: 55px;     /* Mantenemos la separación vertical */
         padding: 0;        /* Quitamos el padding para mejorar el centrado */
-        margin: 30px auto;
+        margin: 30px auto 40px; /* Más espacio abajo */
         max-width: 315px;  /* Ancho exacto basado en el contenido (2×130px + 55px gap) */
         justify-content: center;
       }
@@ -2302,6 +2304,10 @@ Desde ya muchas gracias.`;
         height: 110px;
         padding: 10px;
         font-size: 0.85em;
+      }
+      
+      .primary-button {
+        margin-top: 25px; /* Más espacio sobre el botón */
       }
       
       .feature-icon {
@@ -2340,12 +2346,12 @@ Desde ya muchas gracias.`;
       .welcome-features {
         grid-template-columns: repeat(2, 110px);  /* Cuadros más grandes */
         grid-template-rows: repeat(2, 100px);
-        column-gap: 40px;    /* Menos separación horizontal para centrar mejor */
-        row-gap: 45px;       /* Mantenemos la separación vertical */
+        column-gap: 40px;    /* Separación horizontal */
+        row-gap: 45px;       /* Separación vertical */
         padding: 0;          /* Quitamos el padding para mejorar el centrado */
-        margin: 25px auto;
-        max-width: 260px;    /* Fijamos un ancho máximo basado en los elementos para centrar mejor */
-        justify-content: center;
+        margin: 25px auto 45px; /* Añadimos más espacio abajo para el botón */
+        max-width: 280px;    /* Un poco más ancho para ajustar la posición */
+        justify-content: space-between; /* Distribuye los elementos a los extremos */
       }
       
       .feature-item {
@@ -2354,6 +2360,27 @@ Desde ya muchas gracias.`;
         padding: 8px;
         font-size: 0.8em;
       }
+      
+      .primary-button {
+        margin-top: 30px; /* Más espacio sobre el botón */
+      }
+      
+      /* Reducción del tamaño de la notificación de bienvenida en móviles */
+      #notification-center .notification {
+        width: 220px;
+        padding: 8px 12px;
+        font-size: 0.85em;
+      }
+      
+      .notification-title {
+        font-size: 0.95em;
+        margin-bottom: 3px;
+      }
+      
+      .notification-message {
+        font-size: 0.85em;
+      }
+    }
       
       .feature-icon {
         font-size: 1.6em;
