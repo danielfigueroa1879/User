@@ -1583,10 +1583,19 @@ Desde ya muchas gracias.`;
     
     // Mostrar notificación de bienvenida
     setTimeout(() => {
-      const greeting = new Date().getHours() < 12 ? "¡Buenos días!" : 
-                      new Date().getHours() < 18 ? "¡Buenas tardes!" : 
-                      "¡Buenas noches!";
-      showNotification(greeting, 'Bienvenido/a al sistema de gestión de permisos y feriados.', 'info');
+      // Determinar el saludo basado en la hora del día
+      const hora = new Date().getHours();
+      let greeting = "";
+      
+      if (hora < 12) {
+        greeting = "¡Buenos días!";
+      } else if (hora < 18) {
+        greeting = "¡Buenas tardes!";
+      } else {
+        greeting = "¡Buenas noches!";
+      }
+      
+      showNotification(greeting, 'Bienvenido al sistema de gestión de permisos.', 'info');
     }, 1000);
   };
 
@@ -1778,6 +1787,7 @@ Desde ya muchas gracias.`;
                   opacity 0.5s ease;
       width: auto;
       max-width: 100%;
+      min-width: 250px; /* Ancho mínimo para evitar saltos de línea */
     }
 
     .notification.show {
@@ -1802,6 +1812,7 @@ Desde ya muchas gracias.`;
       margin-bottom: 5px;
       display: flex;
       justify-content: space-between;
+      white-space: nowrap; /* Evita que el título se divida en múltiples líneas */
     }
 
     .notification-close {
@@ -2366,6 +2377,23 @@ Desde ya muchas gracias.`;
         margin: 25px auto 45px; /* Espaciado vertical */
         max-width: 252px;    /* Ancho máximo */
         justify-content: space-between; /* Distribución uniforme */
+      }
+      
+      /* Reducción del tamaño de la notificación de bienvenida en móviles */
+      #notification-center .notification {
+        width: 220px;
+        padding: 8px 12px;
+        font-size: 0.85em;
+        min-width: 200px; /* Ancho mínimo para móviles */
+      }
+      
+      .notification-title {
+        font-size: 0.95em;
+        margin-bottom: 3px;
+      }
+      
+      .notification-message {
+        font-size: 0.85em;
       }
       
       .feature-item {
