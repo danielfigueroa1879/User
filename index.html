@@ -2287,19 +2287,19 @@ Desde ya muchas gracias.`;
       }
       
       .welcome-features {
-        grid-template-columns: repeat(2, 120px);  /* Mantenemos buen tamaño */
-        grid-template-rows: repeat(2, 100px);
-        column-gap: 65px;  /* Un poco más de separación horizontal */
-        row-gap: 55px;     /* Un poco más de separación vertical */
-        padding: 15px;
-        margin-top: 30px;
-        margin-bottom: 30px;
-        max-width: 100%;
+        grid-template-columns: repeat(2, 130px);  /* Cuadros más grandes */
+        grid-template-rows: repeat(2, 110px);
+        column-gap: 55px;  /* Ajustamos la separación horizontal */
+        row-gap: 55px;     /* Mantenemos la separación vertical */
+        padding: 0;        /* Quitamos el padding para mejorar el centrado */
+        margin: 30px auto;
+        max-width: 315px;  /* Ancho exacto basado en el contenido (2×130px + 55px gap) */
+        justify-content: center;
       }
       
       .feature-item {
-        width: 120px;       /* Volvemos al tamaño original */
-        height: 100px;
+        width: 130px;      /* Cuadros más grandes */
+        height: 110px;
         padding: 10px;
         font-size: 0.85em;
       }
@@ -2338,19 +2338,21 @@ Desde ya muchas gracias.`;
     @media (max-width: 480px) {
       /* Ajustes para pantallas muy pequeñas (smartphones) */
       .welcome-features {
-        grid-template-columns: repeat(2, 100px);  /* Volvemos a tamaño más grande */
-        grid-template-rows: repeat(2, 90px);
-        column-gap: 50px;   /* Ligeramente más separación horizontal */
-        row-gap: 45px;      /* Ligeramente más separación vertical */
-        padding: 15px;
+        grid-template-columns: repeat(2, 110px);  /* Cuadros más grandes */
+        grid-template-rows: repeat(2, 100px);
+        column-gap: 40px;    /* Menos separación horizontal para centrar mejor */
+        row-gap: 45px;       /* Mantenemos la separación vertical */
+        padding: 0;          /* Quitamos el padding para mejorar el centrado */
         margin: 25px auto;
+        max-width: 260px;    /* Fijamos un ancho máximo basado en los elementos para centrar mejor */
+        justify-content: center;
       }
       
       .feature-item {
-        width: 100px;       /* Volvemos al tamaño anterior */
-        height: 90px;
+        width: 110px;       /* Cuadros más grandes */
+        height: 100px;
         padding: 8px;
-        font-size: 0.8em;   /* Texto de buen tamaño */
+        font-size: 0.8em;
       }
       
       .feature-icon {
