@@ -808,7 +808,10 @@
       <label for="telefono-input">Teléfono:</label>
       <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
       <div class="error-message"
- <div class="error-message" id="telefono-error"></div>
+ .feature-icon {
+      font-size: 2.2em;  /* Ligeramente más grande por defecto */
+      margin-bottom: 10px;
+    }      <div class="error-message" id="telefono-error"></div>
     </div>
     <div class="form-group" id="correo-group">
       <label for="correo-input">Correo:</label>
@@ -1969,7 +1972,7 @@ Desde ya muchas gracias.`;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.18);
-      z-index: 1;
+      z-index: 2; /* Aumentado para estar sobre el fondo de nubes */
       position: relative;
       transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), 
                   box-shadow 0.3s ease,
@@ -2326,6 +2329,10 @@ Desde ya muchas gracias.`;
         font-size: 0.9em;  /* Texto más pequeño en tablets */
       }
       
+      .feature-icon {
+        font-size: 2.3em;  /* Iconos ligeramente más grandes en tablets */
+      }
+      
       .primary-button {
         margin-top: 25px; /* Más espacio sobre el botón */
       }
@@ -2363,9 +2370,31 @@ Desde ya muchas gracias.`;
       
     @media (max-width: 480px) {
       /* Ajustes para pantallas muy pequeñas (smartphones) */
+      body {
+        background-color: rgba(224, 224, 224, 0.8); /* Fondo ligeramente opaco */
+      }
+      
+      .page-container {
+        background-color: rgba(255, 255, 255, 0.4); /* Más transparente en móviles */
+      }
+      
+      .dark-mode .page-container {
+        background-color: rgba(30, 30, 30, 0.7); /* Versión oscura más transparente */
+      }
+      
       .welcome-content {
         padding: 10px 0;
         max-width: 100%;
+      }
+      
+      .feature-icon {
+        font-size: 2.5em;  /* Iconos más grandes en móviles */
+        margin-bottom: 8px;
+      }
+      
+      .feature-text {
+        font-size: 0.85em;  /* Texto ligeramente más pequeño para equilibrar */
+        line-height: 1.2;
       }
       
       .welcome-features {
