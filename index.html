@@ -1820,6 +1820,7 @@ Desde ya muchas gracias.`;
 
     /* Página de bienvenida */
     .welcome-content {
+      width: 100%;
       text-align: center;
       padding: 20px 0;
     }
@@ -1865,7 +1866,7 @@ Desde ya muchas gracias.`;
 
     .feature-item {
       background-color: var(--card-bg);
-      padding: 15px;
+      padding: 15px 10px;
       border-radius: 10px;
       width: 160px;
       height: 120px;
@@ -1894,6 +1895,11 @@ Desde ya muchas gracias.`;
     .feature-text {
       font-weight: 500;
       color: var(--text-color);
+      font-size: 0.95em;
+      line-height: 1.3;
+      text-align: center;
+      width: 100%;
+      margin: 0 auto;
     }
 
     .primary-button {
@@ -2282,7 +2288,6 @@ Desde ya muchas gracias.`;
       box-shadow: 0 2px 4px var(--shadow-color);
     }
 
-    /* Responsive para tablets */
     @media (max-width: 768px) {
       .page-container {
         padding: 20px;
@@ -2302,8 +2307,12 @@ Desde ya muchas gracias.`;
       .feature-item {
         width: 130px;      /* Cuadros más grandes */
         height: 110px;
-        padding: 10px;
+        padding: 10px 8px;  /* Menos padding horizontal */
         font-size: 0.85em;
+      }
+      
+      .feature-text {
+        font-size: 0.9em;  /* Texto más pequeño en tablets */
       }
       
       .primary-button {
@@ -2343,22 +2352,32 @@ Desde ya muchas gracias.`;
       
     @media (max-width: 480px) {
       /* Ajustes para pantallas muy pequeñas (smartphones) */
+      .welcome-content {
+        padding: 10px 0;
+        max-width: 100%;
+      }
+      
       .welcome-features {
-        grid-template-columns: repeat(2, 110px);  /* Cuadros más grandes */
+        display: grid;
+        grid-template-columns: repeat(2, 110px);  /* Cuadros del mismo tamaño */
         grid-template-rows: repeat(2, 100px);
-        column-gap: 40px;    /* Separación horizontal */
-        row-gap: 45px;       /* Separación vertical */
-        padding: 0;          /* Quitamos el padding para mejorar el centrado */
-        margin: 25px auto 45px; /* Añadimos más espacio abajo para el botón */
-        max-width: 280px;    /* Un poco más ancho para ajustar la posición */
-        justify-content: space-between; /* Distribuye los elementos a los extremos */
+        gap: 45px 32px;      /* row-gap column-gap combinados */
+        padding: 0;          /* Sin padding */
+        margin: 25px auto 45px; /* Espaciado vertical */
+        max-width: 252px;    /* Ancho máximo */
+        justify-content: space-between; /* Distribución uniforme */
       }
       
       .feature-item {
-        width: 110px;       /* Cuadros más grandes */
+        width: 110px;        /* Tamaño uniforme */
         height: 100px;
-        padding: 8px;
+        padding: 8px 5px;    /* Padding reducido horizontalmente */
         font-size: 0.8em;
+      }
+      
+      .feature-text {
+        font-size: 0.85em;  /* Texto aún más pequeño en móviles */
+        line-height: 1.2;
       }
       
       .primary-button {
