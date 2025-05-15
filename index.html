@@ -808,8 +808,7 @@
       <label for="telefono-input">Teléfono:</label>
       <input type="text" id="telefono-input" placeholder="+56 9 1234 5678">
       <div class="error-message"
-           
- .feature-icon {
+           .feature-icon {
       font-size: 2.2em;  /* Ligeramente más grande por defecto */
       margin-bottom: 10px;
     }      <div class="error-message" id="telefono-error"></div>
@@ -1576,9 +1575,6 @@ Desde ya muchas gracias.`;
     // Actualizar el contador de notificaciones
     updateNotificationBadge();
     
-    // Inicializar el tema basado en preferencias del sistema
-    updateThemeAppearance();
-    
     // Asegurar que la página comience en la parte superior
     window.scrollTo(0, 0);
     
@@ -1707,33 +1703,6 @@ Desde ya muchas gracias.`;
       --notification-bg: rgba(255, 255, 255, 0.9);
       --notification-border: #ddd;
       --holiday-color: white;
-    }
-
-    .dark-mode {
-      --background-color: #121212;
-      --text-color: #e0e0e0;
-      --text-color-light: #b0b0b0;
-      --card-bg: rgba(30, 30, 30, 0.6);
-      --input-bg: rgba(50, 50, 50, 0.8);
-      --primary-color: rgba(70, 130, 180, 0.8);
-      --primary-hover: rgba(100, 149, 237, 0.9);
-      --secondary-bg: rgba(40, 40, 40, 0.5);
-      --secondary-hover: rgba(60, 60, 60, 0.7);
-      --cloud-gradient: linear-gradient(to bottom, #203040, #304050);
-      --weekend-bg: rgba(180, 60, 30, 0.6);
-      --today-border: rgba(180, 70, 50, 0.7);
-      --selected-bg: rgba(180, 120, 20, 0.7);
-      --disabled-bg: rgba(180, 60, 30, 0.3);
-      --shadow-color: rgba(0, 0, 0, 0.2);
-      --shadow-color-hover: rgba(0, 0, 0, 0.3);
-      --modal-bg: #333;
-      --modal-overlay: rgba(0, 0, 0, 0.8);
-      --profile-border: rgba(100, 100, 100, 0.5);
-      --error-color: #ff5555;
-      --success-color: #55cc55;
-      --notification-bg: rgba(50, 50, 50, 0.9);
-      --notification-border: #444;
-      --holiday-color: #e0e0e0;
     }
 
     body {
